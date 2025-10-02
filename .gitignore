@@ -1,0 +1,53 @@
+# Environment variables
+.env
+*.env
+!env.example
+
+# Go
+/api/trackveil-api
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Database
+*.sql~
+*.db
+*.sqlite
+
+# Build artifacts
+dist/
+build/
+*.min.js.map
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS
+Thumbs.db
+

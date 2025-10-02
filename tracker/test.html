@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackveil Tracker Test Page</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .info-box {
+            background: #f4f4f4;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #4CAF50;
+            color: white;
+        }
+        .status.error {
+            background: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Trackveil Tracker Test Page</h1>
+    
+    <div class="info-box">
+        <strong>Test Instructions:</strong>
+        <ol>
+            <li>Make sure your API server is running</li>
+            <li>Open your browser's developer console</li>
+            <li>Load this page</li>
+            <li>Check for tracking requests in the Network tab</li>
+            <li>Verify data appears in your database</li>
+        </ol>
+    </div>
+
+    <h2>What's Being Tracked</h2>
+    <div id="tracking-info"></div>
+
+    <h2>Test Controls</h2>
+    <button onclick="reload()">Reload Page</button>
+    <button onclick="clearFingerprint()">Clear Fingerprint</button>
+    <button onclick="showConsole()">Show Console</button>
+
+    <h2>Expected API Request</h2>
+    <div class="code" id="expected-request"></div>
+
+    <script>
+        function reload() {
+            location.reload();
+        }
+
+        function clearFingerprint() {
+            localStorage.removeItem('tv_fp');
+            alert('Fingerprint cleared! Reload the page to generate a new one.');
+        }
+
+        function showConsole() {
+            console.log('Trackveil Test Page');
+            console.log('LocalStorage fingerprint:', localStorage.getItem('tv_fp'));
+        }
+
+        // Display tracking info
+        const trackingInfo = document.getElementById('tracking-info');
+        trackingInfo.innerHTML = `
+            <p><strong>Page URL:</strong> ${window.location.href}</p>
+            <p><strong>Page Title:</strong> ${document.title}</p>
+            <p><strong>Referrer:</strong> ${document.referrer || '(none)'}</p>
+            <p><strong>Screen:</strong> ${screen.width}x${screen.height}</p>
+            <p><strong>User Agent:</strong> ${navigator.userAgent}</p>
+            <p><strong>Fingerprint:</strong> ${localStorage.getItem('tv_fp') || '(will be generated)'}</p>
+        `;
+
+        // Display expected request
+        const expectedRequest = document.getElementById('expected-request');
+        expectedRequest.textContent = JSON.stringify({
+            site_id: "00000000-0000-0000-0000-000000000003",
+            page_url: window.location.href,
+            page_title: document.title,
+            referrer: document.referrer,
+            screen_width: screen.width,
+            screen_height: screen.height,
+            fingerprint: "fp_xxxxx_xxxxx",
+            load_time: 1234
+        }, null, 2);
+    </script>
+
+    <!-- Trackveil Tracker -->
+    <!-- Change to tracker.min.js for production testing -->
+    <script async src="tracker.js" data-site-id="00000000-0000-0000-0000-000000000003"></script>
+</body>
+</html>
+
