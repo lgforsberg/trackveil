@@ -148,7 +148,8 @@
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-      keepalive: true // Allows request to continue after page unload
+      keepalive: true, // Allows request to continue after page unload
+      credentials: 'omit' // Explicitly don't send credentials (fixes CORS issue)
     }).catch(function(error) {
       // Silent fail - don't disrupt the user experience
       console.debug('[Trackveil] Tracking failed:', error);
