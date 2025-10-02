@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"net/http"
+	"strconv"
 	"time"
 
 	"trackveilapi/internal/database"
@@ -28,9 +29,38 @@ func NewTrackHandler(db *database.DB) *TrackHandler {
 // Track handles POST /track requests
 func (h *TrackHandler) Track(c *gin.Context) {
 	var req models.TrackRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
-		return
+
+	// Handle both POST (JSON) and GET (query params) for service worker compatibility
+	if c.Request.Method == "GET" {
+		// Parse from query parameters (image pixel fallback)
+		req.SiteID = c.Query("site_id")
+		req.PageURL = c.Query("page_url")
+		req.PageTitle = c.Query("page_title")
+		req.Referrer = c.Query("referrer")
+		req.Fingerprint = c.Query("fingerprint")
+
+		// Parse numeric fields
+		if sw := c.Query("screen_width"); sw != "" {
+			if val, err := strconv.Atoi(sw); err == nil {
+				req.ScreenWidth = val
+			}
+		}
+		if sh := c.Query("screen_height"); sh != "" {
+			if val, err := strconv.Atoi(sh); err == nil {
+				req.ScreenHeight = val
+			}
+		}
+		if lt := c.Query("load_time"); lt != "" {
+			if val, err := strconv.Atoi(lt); err == nil {
+				req.LoadTime = &val
+			}
+		}
+	} else {
+		// Parse from JSON body (normal POST request)
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+			return
+		}
 	}
 
 	// Validate site_id format
@@ -106,7 +136,18 @@ func (h *TrackHandler) Track(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "success"})
+	// Return appropriate response based on request method
+	if c.Request.Method == "GET" {
+		// For image pixel requests, return a 1x1 transparent GIF
+		c.Header("Content-Type", "image/gif")
+		c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
+		// 1x1 transparent GIF (43 bytes)
+		gif := []byte{0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00, 0x80, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x21, 0xF9, 0x04, 0x01, 0x00, 0x00, 0x00, 0x00, 0x2C, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x02, 0x02, 0x44, 0x01, 0x00, 0x3B}
+		c.Data(http.StatusOK, "image/gif", gif)
+	} else {
+		// For POST requests, return JSON
+		c.JSON(http.StatusOK, gin.H{"status": "success"})
+	}
 }
 
 // Health check endpoint

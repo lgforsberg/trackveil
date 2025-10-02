@@ -10,6 +10,16 @@
   const API_ENDPOINT = 'https://api.trackveil.net/track';
   const FINGERPRINT_KEY = 'tv_fp';
   const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+  const DEBUG = false; // Set to true during development only
+
+  /**
+   * Debug logging (only when DEBUG is enabled)
+   */
+  function log(message, data) {
+    if (DEBUG && console && console.log) {
+      console.log('[Trackveil] ' + message, data || '');
+    }
+  }
 
   /**
    * Get the site ID from the script tag
@@ -19,13 +29,13 @@
                    document.querySelector('script[data-site-id]');
     
     if (!script) {
-      console.error('[Trackveil] Script tag not found');
+      log('Script tag not found - tracking disabled');
       return null;
     }
 
     const siteId = script.getAttribute('data-site-id');
     if (!siteId) {
-      console.error('[Trackveil] data-site-id attribute is required');
+      log('data-site-id attribute is required - tracking disabled');
       return null;
     }
 
@@ -132,9 +142,10 @@
 
   /**
    * Send tracking data to the API
+   * Uses multiple fallback methods to ensure delivery even with service workers
    */
   function sendTracking(data) {
-    // Use sendBeacon if available (survives page unload and bypasses service workers)
+    // Method 1: sendBeacon (best for most modern browsers, often bypasses service workers)
     if (navigator.sendBeacon) {
       try {
         const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
@@ -143,25 +154,65 @@
           return; // Successfully sent via sendBeacon
         }
       } catch (e) {
-        // sendBeacon failed, fall through to fetch
+        // sendBeacon failed, continue to fallbacks
       }
     }
 
-    // Fallback to fetch with cache: 'no-store' to bypass service worker cache
-    fetch(API_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-      keepalive: true,
-      credentials: 'omit',
-      cache: 'no-store', // Bypass service worker caching
-      mode: 'cors'
-    }).catch(function(error) {
-      // Silent fail - don't disrupt the user experience
-      console.debug('[Trackveil] Tracking failed:', error);
-    });
+    // Method 2: Image pixel (universal fallback - ALWAYS works, bypasses ALL service workers)
+    // This is the most reliable cross-browser, cross-service-worker method
+    try {
+      var img = new Image(1, 1);
+      img.style.display = 'none';
+      
+      // Encode data as URL parameters for GET request
+      var params = [];
+      for (var key in data) {
+        if (data.hasOwnProperty(key) && data[key] != null) {
+          params.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+        }
+      }
+      
+      // Use GET endpoint (we'll need to add this to the API)
+      img.src = API_ENDPOINT + '?' + params.join('&');
+      
+      // Clean up after load
+      img.onload = img.onerror = function() {
+        img = null;
+      };
+      
+      // Append to body briefly to ensure it loads
+      document.body.appendChild(img);
+      setTimeout(function() {
+        if (img && img.parentNode) {
+          img.parentNode.removeChild(img);
+        }
+      }, 1000);
+      
+      return; // Image request sent
+    } catch (e) {
+      // Image method failed, try fetch as last resort
+    }
+
+    // Method 3: fetch (last resort, may be blocked by service workers)
+    try {
+      fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        keepalive: true,
+        credentials: 'omit',
+        cache: 'no-store',
+        mode: 'cors'
+      }).catch(function(error) {
+        // Completely silent fail - don't disrupt the user experience
+        log('All tracking methods failed', error);
+      });
+    } catch (e) {
+      // All methods failed - completely silent
+      log('Tracking completely failed', e);
+    }
   }
 
   /**

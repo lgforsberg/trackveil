@@ -55,6 +55,7 @@ func main() {
 	// Routes
 	router.GET("/health", trackHandler.Health)
 	router.POST("/track", trackHandler.Track)
+	router.GET("/track", trackHandler.Track) // Support GET for image pixel fallback
 
 	// Start server
 	addr := fmt.Sprintf(":%d", cfg.API.Port)
