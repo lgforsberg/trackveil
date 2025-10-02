@@ -147,26 +147,11 @@
   function sendTracking(data) {
     console.log('[Trackveil DEBUG] sendTracking called with data:', data);
     
-    // Method 1: sendBeacon (best for most modern browsers, often bypasses service workers)
-    if (navigator.sendBeacon) {
-      console.log('[Trackveil DEBUG] Trying sendBeacon...');
-      try {
-        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-        const sent = navigator.sendBeacon(API_ENDPOINT, blob);
-        console.log('[Trackveil DEBUG] sendBeacon returned:', sent);
-        if (sent) {
-          console.log('[Trackveil DEBUG] sendBeacon succeeded, returning');
-          return; // Successfully sent via sendBeacon
-        }
-      } catch (e) {
-        console.log('[Trackveil DEBUG] sendBeacon failed with error:', e);
-        // sendBeacon failed, continue to fallbacks
-      }
-    } else {
-      console.log('[Trackveil DEBUG] sendBeacon not available');
-    }
+    // Skip sendBeacon - it can be intercepted by service workers even though it returns true
+    // Go straight to image pixel method which ALWAYS bypasses service workers
+    console.log('[Trackveil DEBUG] Skipping sendBeacon (service worker safe)');
 
-    // Method 2: Image pixel (universal fallback - ALWAYS works, bypasses ALL service workers)
+    // Method 1: Image pixel (universal fallback - ALWAYS works, bypasses ALL service workers)
     // This is the most reliable cross-browser, cross-service-worker method
     // No DOM manipulation needed - just setting img.src triggers the request!
     console.log('[Trackveil DEBUG] Trying image pixel method...');
@@ -207,8 +192,8 @@
       console.log('[Trackveil DEBUG] Image pixel exception:', e);
     }
 
-    // Method 3: fetch (last resort, may be blocked by service workers)
-    console.log('[Trackveil DEBUG] Falling back to fetch (both sendBeacon and image pixel failed)');
+    // Method 2: fetch (last resort, may be blocked by service workers)
+    console.log('[Trackveil DEBUG] Falling back to fetch (image pixel failed somehow)');
     try {
       fetch(API_ENDPOINT, {
         method: 'POST',

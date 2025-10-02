@@ -145,20 +145,10 @@
    * Uses multiple fallback methods to ensure delivery even with service workers
    */
   function sendTracking(data) {
-    // Method 1: sendBeacon (best for most modern browsers, often bypasses service workers)
-    if (navigator.sendBeacon) {
-      try {
-        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-        const sent = navigator.sendBeacon(API_ENDPOINT, blob);
-        if (sent) {
-          return; // Successfully sent via sendBeacon
-        }
-      } catch (e) {
-        // sendBeacon failed, continue to fallbacks
-      }
-    }
-
-    // Method 2: Image pixel (universal fallback - ALWAYS works, bypasses ALL service workers)
+    // Skip sendBeacon - it can be intercepted by service workers even though it returns true
+    // Go straight to image pixel method which ALWAYS bypasses service workers
+    
+    // Method 1: Image pixel (universal fallback - ALWAYS works, bypasses ALL service workers)
     // This is the most reliable cross-browser, cross-service-worker method
     // No DOM manipulation needed - just setting img.src triggers the request!
     try {
@@ -196,7 +186,7 @@
       log('Image pixel exception:', e);
     }
 
-    // Method 3: fetch (last resort, may be blocked by service workers)
+    // Method 2: fetch (last resort, may be blocked by service workers)
     try {
       fetch(API_ENDPOINT, {
         method: 'POST',
