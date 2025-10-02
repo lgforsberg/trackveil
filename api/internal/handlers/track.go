@@ -7,11 +7,12 @@ import (
 	"net/http"
 	"time"
 
+	"trackveilapi/internal/database"
+	"trackveilapi/internal/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/mssola/user_agent"
-	"trackveil-api/internal/database"
-	"trackveil-api/internal/models"
 )
 
 // TrackHandler handles incoming tracking requests

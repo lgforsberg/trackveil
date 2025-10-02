@@ -1,4 +1,4 @@
-module trackveil-api
+module trackveilapi
 
 go 1.21
 

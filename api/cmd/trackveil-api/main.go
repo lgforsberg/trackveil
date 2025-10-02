@@ -7,11 +7,12 @@ import (
 	"os/signal"
 	"syscall"
 
+	"trackveilapi/internal/config"
+	"trackveilapi/internal/database"
+	"trackveilapi/internal/handlers"
+	"trackveilapi/internal/middleware"
+
 	"github.com/gin-gonic/gin"
-	"trackveil-api/internal/config"
-	"trackveil-api/internal/database"
-	"trackveil-api/internal/handlers"
-	"trackveil-api/internal/middleware"
 )
 
 var (
@@ -74,4 +75,3 @@ func main() {
 
 	log.Println("Shutting down server...")
 }
-
