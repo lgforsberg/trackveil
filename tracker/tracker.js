@@ -160,17 +160,11 @@
 
     // Method 2: Image pixel (universal fallback - ALWAYS works, bypasses ALL service workers)
     // This is the most reliable cross-browser, cross-service-worker method
+    // No DOM manipulation needed - just setting img.src triggers the request!
     try {
-      // Safety check for document.body
-      if (!document.body) {
-        throw new Error('document.body not available');
-      }
+      log('Trying image pixel method...');
       
       var img = new Image(1, 1);
-      img.style.display = 'none';
-      img.style.position = 'absolute';
-      img.style.width = '1px';
-      img.style.height = '1px';
       
       // Encode data as URL parameters for GET request
       var params = [];
@@ -180,25 +174,26 @@
         }
       }
       
-      // Set source (this triggers the GET request)
+      // Set source to trigger GET request
+      // NOTE: Setting img.src sends the request even WITHOUT appending to DOM!
       img.src = API_ENDPOINT + '?' + params.join('&');
       
-      // Append to body to ensure request is sent
-      document.body.appendChild(img);
-      
-      // Clean up after load
-      img.onload = img.onerror = function() {
-        if (img && img.parentNode) {
-          img.parentNode.removeChild(img);
-        }
+      // Clean up after load (optional, but good practice)
+      img.onload = function() {
+        log('Image pixel succeeded');
         img = null;
       };
       
-      log('Tracking sent via image pixel');
+      img.onerror = function() {
+        log('Image pixel request sent (error handler - this is normal)');
+        img = null;
+      };
+      
+      log('Image pixel request initiated');
       return; // Image request sent
     } catch (e) {
       // Image method failed, try fetch as last resort
-      log('Image pixel failed', e);
+      log('Image pixel exception:', e);
     }
 
     // Method 3: fetch (last resort, may be blocked by service workers)
