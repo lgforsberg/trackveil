@@ -8,10 +8,10 @@ import (
 	"syscall"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lgforsberg/trackveil/api/internal/config"
-	"github.com/lgforsberg/trackveil/api/internal/database"
-	"github.com/lgforsberg/trackveil/api/internal/handlers"
-	"github.com/lgforsberg/trackveil/api/internal/middleware"
+	"trackveil-api/internal/config"
+	"trackveil-api/internal/database"
+	"trackveil-api/internal/handlers"
+	"trackveil-api/internal/middleware"
 )
 
 var (

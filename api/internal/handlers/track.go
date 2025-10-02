@@ -9,9 +9,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/lgforsberg/trackveil/api/internal/database"
-	"github.com/lgforsberg/trackveil/api/internal/models"
 	"github.com/mssola/user_agent"
+	"trackveil-api/internal/database"
+	"trackveil-api/internal/models"
 )
 
 // TrackHandler handles incoming tracking requests

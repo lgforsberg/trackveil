@@ -1,4 +1,4 @@
-module github.com/lgforsberg/trackveil/api
+module trackveil-api
 
 go 1.21
 
