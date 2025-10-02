@@ -1,18 +1,24 @@
 # Environment variables
 .env
 
-# Go build artifacts
+# Build artifacts
+bin/
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
 
+# Logs
+logs/
+*.log
+
 # Test binary
 *.test
 
 # Output of the go coverage tool
 *.out
+coverage.html
 
 # Dependency directories
 vendor/
@@ -29,4 +35,7 @@ go.work
 
 # macOS
 .DS_Store
+
+# PID files
+*.pid
 

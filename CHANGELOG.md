@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Site IDs now use 32-character alphanumeric format** instead of UUIDs
+  - More user-friendly and easier to work with
+  - Format: 32 characters using a-z, A-Z, 0-9
+  - Example: `a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6`
+  - Migration provided: `003_change_site_id_to_hash.sql`
+
+### Added
+- Site ID validation in API
+- `GenerateSiteID()` function for creating new site IDs
+- Documentation for creating sites manually
+- Go project structure follows best practices (cmd/ and internal/)
+- Comprehensive Makefile for building and managing the API
+
 ### Phase 2 (Planned)
 - Dashboard UI for viewing analytics
 - User authentication and management

@@ -49,8 +49,10 @@ psql -h your-host -U your-user -d trackveil -f migrations/002_seed_test_data.sql
 You should see a test site ID at the end:
 ```
 Use this Site ID in your tracker snippet:
-00000000-0000-0000-0000-000000000003
+a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
 ```
+
+**Note:** Site IDs are 32-character alphanumeric strings (not UUIDs) - much shorter and easier to work with!
 
 ## Step 2: API Setup
 

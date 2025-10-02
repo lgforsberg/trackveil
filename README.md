@@ -49,6 +49,8 @@ Add this snippet to any website:
 <script async src="https://cdn.trackveil.net/tracker.js" data-site-id="YOUR_SITE_ID"></script>
 ```
 
+Your site ID is a short 32-character code (e.g., `a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6`)
+
 ## Development Roadmap
 
 ### Phase 1 (Current)
