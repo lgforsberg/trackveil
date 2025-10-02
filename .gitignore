@@ -51,3 +51,5 @@ temp/
 # OS
 Thumbs.db
 
+# Secrets
+config
