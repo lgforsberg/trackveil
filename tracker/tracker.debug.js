@@ -145,25 +145,32 @@
    * Uses multiple fallback methods to ensure delivery even with service workers
    */
   function sendTracking(data) {
+    console.log('[Trackveil DEBUG] sendTracking called with data:', data);
+    
     // Method 1: sendBeacon (best for most modern browsers, often bypasses service workers)
     if (navigator.sendBeacon) {
+      console.log('[Trackveil DEBUG] Trying sendBeacon...');
       try {
         const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
         const sent = navigator.sendBeacon(API_ENDPOINT, blob);
+        console.log('[Trackveil DEBUG] sendBeacon returned:', sent);
         if (sent) {
+          console.log('[Trackveil DEBUG] sendBeacon succeeded, returning');
           return; // Successfully sent via sendBeacon
         }
       } catch (e) {
+        console.log('[Trackveil DEBUG] sendBeacon failed with error:', e);
         // sendBeacon failed, continue to fallbacks
       }
+    } else {
+      console.log('[Trackveil DEBUG] sendBeacon not available');
     }
 
     // Method 2: Image pixel (universal fallback - ALWAYS works, bypasses ALL service workers)
     // This is the most reliable cross-browser, cross-service-worker method
     // No DOM manipulation needed - just setting img.src triggers the request!
+    console.log('[Trackveil DEBUG] Trying image pixel method...');
     try {
-      log('Trying image pixel method...');
-      
       var img = new Image(1, 1);
       
       // Encode data as URL parameters for GET request
@@ -174,29 +181,34 @@
         }
       }
       
+      var imageUrl = API_ENDPOINT + '?' + params.join('&');
+      console.log('[Trackveil DEBUG] Image URL:', imageUrl);
+      console.log('[Trackveil DEBUG] Image URL length:', imageUrl.length);
+      
       // Set source to trigger GET request
       // NOTE: Setting img.src sends the request even WITHOUT appending to DOM!
-      img.src = API_ENDPOINT + '?' + params.join('&');
+      img.src = imageUrl;
       
       // Clean up after load (optional, but good practice)
       img.onload = function() {
-        log('Image pixel succeeded');
+        console.log('[Trackveil DEBUG] Image pixel onload fired');
         img = null;
       };
       
       img.onerror = function() {
-        log('Image pixel request sent (error handler - this is normal)');
+        console.log('[Trackveil DEBUG] Image pixel onerror fired (this is normal)');
         img = null;
       };
       
-      log('Image pixel request initiated');
+      console.log('[Trackveil DEBUG] Image pixel request initiated, returning');
       return; // Image request sent
     } catch (e) {
       // Image method failed, try fetch as last resort
-      log('Image pixel exception:', e);
+      console.log('[Trackveil DEBUG] Image pixel exception:', e);
     }
 
     // Method 3: fetch (last resort, may be blocked by service workers)
+    console.log('[Trackveil DEBUG] Falling back to fetch (both sendBeacon and image pixel failed)');
     try {
       fetch(API_ENDPOINT, {
         method: 'POST',
