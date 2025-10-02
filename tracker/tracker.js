@@ -134,22 +134,30 @@
    * Send tracking data to the API
    */
   function sendTracking(data) {
-    // Use sendBeacon if available (survives page unload)
+    // Use sendBeacon if available (survives page unload and bypasses service workers)
     if (navigator.sendBeacon) {
-      const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-      navigator.sendBeacon(API_ENDPOINT, blob);
-      return;
+      try {
+        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+        const sent = navigator.sendBeacon(API_ENDPOINT, blob);
+        if (sent) {
+          return; // Successfully sent via sendBeacon
+        }
+      } catch (e) {
+        // sendBeacon failed, fall through to fetch
+      }
     }
 
-    // Fallback to fetch
+    // Fallback to fetch with cache: 'no-store' to bypass service worker cache
     fetch(API_ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-      keepalive: true, // Allows request to continue after page unload
-      credentials: 'omit' // Explicitly don't send credentials (fixes CORS issue)
+      keepalive: true,
+      credentials: 'omit',
+      cache: 'no-store', // Bypass service worker caching
+      mode: 'cors'
     }).catch(function(error) {
       // Silent fail - don't disrupt the user experience
       console.debug('[Trackveil] Tracking failed:', error);
