@@ -52,4 +52,4 @@ temp/
 Thumbs.db
 
 # Secrets
-config
+./config
