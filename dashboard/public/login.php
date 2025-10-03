@@ -61,21 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="w-full max-w-md">
             <!-- Logo -->
             <div class="text-center mb-8">
-                <div class="inline-flex p-4 rounded-2xl bg-navy text-sky-300 shadow-lg mb-4">
-                    <svg viewBox="0 0 64 64" width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="32" cy="32" r="24" stroke="url(#g1)" stroke-width="5"/>
-                        <circle cx="32" cy="32" r="14" stroke="url(#g1)" stroke-width="5" opacity=".6"/>
-                        <path d="M32 32 L54 18" stroke="url(#g1)" stroke-width="7" stroke-linecap="round"/>
-                        <circle cx="25" cy="39" r="4" fill="#38BDF8"/>
-                        <circle cx="37" cy="27" r="4" fill="#2DD4BF"/>
-                        <circle cx="46" cy="37" r="4" fill="#38BDF8"/>
-                        <defs>
-                            <linearGradient id="g1" x1="8" y1="56" x2="56" y2="8" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#2DD4BF"/>
-                                <stop offset="1" stop-color="#38BDF8"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
+                <div class="inline-block mb-4">
+                    <img src="/assets/img/icon_128.png" alt="Trackveil" width="80" height="80" class="mx-auto rounded-2xl shadow-lg">
                 </div>
                 <h1 class="text-2xl font-bold text-gray-900">Welcome to Trackveil</h1>
                 <p class="text-gray-600 text-sm mt-1">Sign in to your dashboard</p>
