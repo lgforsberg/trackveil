@@ -15,7 +15,7 @@ trackveil/
 
 ## Quick Start
 
-👉 **See [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) for detailed setup instructions**
+👉 **See [docs/getting-started.md](docs/getting-started.md) for detailed setup instructions**
 
 ### TL;DR
 
@@ -70,12 +70,23 @@ Your site ID is a short 32-character code (e.g., `a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5
 
 ## Documentation
 
-- **[Getting Started Guide](docs/GETTING_STARTED.md)** - Step-by-step setup instructions
-- **[Architecture Overview](docs/ARCHITECTURE.md)** - System design and data flow
-- **[Roadmap](docs/ROADMAP.md)** - Future features and timeline
-- **[API Documentation](api/README.md)** - API endpoints and usage
-- **[Tracker Documentation](tracker/README.md)** - JavaScript snippet details
-- **[Database Schema](database/README.md)** - Database structure
+📚 **[Full Documentation Index](docs/README.md)**
+
+**Getting Started:**
+- [Getting Started Guide](docs/getting-started.md) - Complete setup instructions
+- [Deployment Guide](docs/deployment.md) - Production deployment
+- [Site Management](docs/site-management.md) - Creating and managing sites
+
+**Technical:**
+- [Architecture Overview](docs/architecture.md) - System design and data flow
+- [Service Worker Compatibility](docs/service-workers.md) - How we achieve 99.9% reliability
+- [Roadmap](docs/roadmap.md) - Future features and timeline
+
+**Components:**
+- [API Documentation](api/README.md) - Go tracking API
+- [Tracker Documentation](tracker/README.md) - JavaScript snippet
+- [Dashboard Documentation](dashboard/README.md) - Analytics dashboard
+- [Database Schema](database/README.md) - PostgreSQL schema
 
 ## Project Status
 
@@ -91,9 +102,9 @@ Currently tracking:
 - ✅ Page load times
 - ✅ **99.9% success rate** (service worker compatible)
 
-**Phase 2: 🚧 Planned** - Dashboard UI and user management (Q4 2025)
+**Phase 2: 🚧 In Progress** - Dashboard UI with PHP + HTMX
 
-See [ROADMAP.md](docs/ROADMAP.md) for detailed future plans.
+See [roadmap.md](docs/roadmap.md) for detailed future plans.
 
 ## Tech Stack
 
