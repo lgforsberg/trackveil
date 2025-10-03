@@ -33,16 +33,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Trackveil</title>
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         navy: '#0F172A',
+                        slate2: '#1E293B',
                         teal: '#14B8A6',
                         sky: '#38BDF8',
                         turquoise: '#2DD4BF',
+                    },
+                    boxShadow: {
+                        glow: '0 0 0 2px rgba(56,189,248,.25), 0 0 40px rgba(20,184,166,.25)'
                     }
                 }
             }
@@ -95,6 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             id="email" 
                             name="email" 
                             required
+                            autocomplete="email"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                             placeholder="you@example.com"
                             value="<?php echo e($_POST['email'] ?? ''); ?>"
@@ -110,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             id="password" 
                             name="password" 
                             required
+                            autocomplete="current-password"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                             placeholder="Enter your password"
                         >
