@@ -12,6 +12,7 @@ Complete documentation for the Trackveil analytics platform.
 
 - **[Service Worker Compatibility](service-workers.md)** - How we achieve 99.9% tracking reliability
 - **[Site Management](site-management.md)** - Creating and managing sites
+- **[Site Overview Dashboard](SITE_OVERVIEW.md)** - Multi-site overview with sparklines
 - **[Roadmap](roadmap.md)** - Future features and timeline
 
 ## Component Documentation
@@ -50,7 +51,16 @@ Currently tracking:
 - ✅ Browser/device information
 - ✅ **99.9% success rate** (service worker compatible)
 
-**Phase 2: 🚧 In Progress** - Dashboard UI with PHP + HTMX
+**Phase 2: ✅ Complete** - Dashboard UI with PHP + HTMX + Tailwind
+
+Dashboard features:
+- ✅ Login/authentication system
+- ✅ Site overview with mini sparkline graphs (Plausible-style)
+- ✅ Auto-refreshing analytics (every 60s)
+- ✅ Combined account statistics
+- ✅ Detailed per-site dashboards
+- ✅ Site management
+- ✅ Smart routing (1 site → direct, 2+ sites → overview)
 
 ## Support
 
