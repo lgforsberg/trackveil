@@ -30,61 +30,62 @@ $browserStats = getBrowserStats($siteId);
 $deviceStats = getDeviceStats($siteId);
 ?>
 
-<!-- Stats Cards -->
+<!-- Stats Cards - Using gradients like site overview -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <!-- Page Views -->
-    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
+    <div class="rounded-xl shadow-lg p-6 text-white" style="background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);">
         <div class="flex items-center justify-between">
-            <div class="text-sm font-medium text-gray-600 dark:text-gray-400">Page Views</div>
-            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="text-sm opacity-90">Page Views</div>
+            <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
             </svg>
         </div>
         <div class="mt-3">
-            <div class="text-3xl font-bold text-gray-900 dark:text-white">
+            <div class="text-3xl font-bold">
                 <?php echo formatNumber($stats['page_views_today']); ?>
             </div>
-            <div class="text-sm mt-1">
+            <div class="text-sm mt-1 opacity-75">
                 <?php echo changeIndicator($stats['views_change']); ?>
-                <span class="text-gray-500">vs yesterday</span>
+                <span>vs yesterday</span>
             </div>
         </div>
-        <div class="mt-3 text-xs text-gray-500">
+        <div class="mt-3 text-xs opacity-75">
             <?php echo formatNumber($stats['page_views']); ?> total (30 days)
         </div>
     </div>
     
     <!-- Unique Visitors -->
-    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
+    <div class="rounded-xl shadow-lg p-6 text-white" style="background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%);">
         <div class="flex items-center justify-between">
-            <div class="text-sm font-medium text-gray-600">Unique Visitors</div>
-            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="text-sm opacity-90">Unique Visitors</div>
+            <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
             </svg>
         </div>
         <div class="mt-3">
-            <div class="text-3xl font-bold text-gray-900">
+            <div class="text-3xl font-bold">
                 <?php echo formatNumber($stats['unique_visitors_today']); ?>
             </div>
-            <div class="text-sm mt-1 text-gray-500">today</div>
+            <div class="text-sm mt-1 opacity-75">today</div>
         </div>
-        <div class="mt-3 text-xs text-gray-500">
+        <div class="mt-3 text-xs opacity-75">
             <?php echo formatNumber($stats['unique_visitors']); ?> total (30 days)
         </div>
     </div>
     
-    <!-- Placeholder cards -->
-    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
-        <div class="text-sm font-medium text-gray-600">Avg. Session</div>
-        <div class="text-3xl font-bold text-gray-900 mt-3">-</div>
-        <div class="text-sm mt-1 text-gray-500">Coming soon</div>
+    <!-- Avg. Session - Placeholder -->
+    <div class="bg-white dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl shadow-sm p-6">
+        <div class="text-sm font-medium text-gray-600 dark:text-gray-400">Avg. Session</div>
+        <div class="text-3xl font-bold text-gray-400 dark:text-gray-500 mt-3">-</div>
+        <div class="text-sm mt-1 text-gray-500 dark:text-gray-400">Coming soon</div>
     </div>
     
-    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
-        <div class="text-sm font-medium text-gray-600">Bounce Rate</div>
-        <div class="text-3xl font-bold text-gray-900 mt-3">-</div>
-        <div class="text-sm mt-1 text-gray-500">Coming soon</div>
+    <!-- Bounce Rate - Placeholder -->
+    <div class="bg-white dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl shadow-sm p-6">
+        <div class="text-sm font-medium text-gray-600 dark:text-gray-400">Bounce Rate</div>
+        <div class="text-3xl font-bold text-gray-400 dark:text-gray-500 mt-3">-</div>
+        <div class="text-sm mt-1 text-gray-500 dark:text-gray-400">Coming soon</div>
     </div>
 </div>
 

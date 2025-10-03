@@ -58,7 +58,7 @@ require __DIR__ . '/../../templates/nav.php';
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white"><?php echo e($selectedSite['name']); ?></h1>
                 <a href="https://<?php echo e($selectedSite['domain']); ?>" 
                    target="_blank"
-                   class="text-sm text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 hover:underline transition">
+                   class="text-sm text-sky-500 dark:text-sky-400 hover:text-sky-600 dark:hover:text-sky-300 hover:underline transition font-medium">
                     <?php echo e($selectedSite['domain']); ?> ↗
                 </a>
             </div>
