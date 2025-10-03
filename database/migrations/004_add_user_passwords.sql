@@ -13,8 +13,9 @@ ALTER TABLE users ADD COLUMN verification_token VARCHAR(64);
 ALTER TABLE users ADD COLUMN last_login_at TIMESTAMP WITH TIME ZONE;
 
 -- Update test user with a password (password: "password123")
+-- Hash generated with: password_hash('password123', PASSWORD_DEFAULT)
 UPDATE users 
-SET password_hash = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
+SET password_hash = '$2y$12$kLXtqjDycOWPBQY1Z5gqdedJ173eRLWZFOKilDtSf62X7KvW/9PkC'
 WHERE email = 'test@example.com';
 
 -- Create an index on email for faster login queries
