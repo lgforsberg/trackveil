@@ -29,9 +29,9 @@ $user = currentUser();
             
             <!-- Navigation Links -->
             <div class="hidden md:flex items-center gap-6">
-                <a href="/app/" class="text-sm hover:text-sky-600">Dashboard</a>
-                <a href="/app/sites.php" class="text-sm hover:text-sky-600">Sites</a>
-                <a href="/app/account.php" class="text-sm hover:text-sky-600">Account</a>
+                <a href="/app/" class="text-sm hover:text-sky-600 transition">Dashboard</a>
+                <a href="/app/sites.php" class="text-sm hover:text-sky-600 transition">Sites</a>
+                <a href="/app/account.php" class="text-sm hover:text-sky-600 transition">Account</a>
             </div>
             
             <!-- User Menu -->
