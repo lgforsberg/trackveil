@@ -79,8 +79,8 @@ require __DIR__ . '/../../templates/nav.php';
 ?>
 
 <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
-    <h1 class="text-3xl font-bold text-gray-900 mb-2">Your Sites</h1>
-    <p class="text-gray-600 mb-8">Overview of all tracked websites</p>
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Your Sites</h1>
+    <p class="text-gray-600 dark:text-gray-400 mb-8">Overview of all tracked websites</p>
     
     <!-- Combined Stats (All Sites) -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -122,36 +122,36 @@ require __DIR__ . '/../../templates/nav.php';
             ?>
             
             <a href="/app/site-detail.php?site=<?php echo urlencode($site['id']); ?>" 
-               class="block bg-white rounded-xl shadow-sm hover:shadow-md transition p-6 group">
+               class="block bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md dark:hover:shadow-lg transition p-6 group border border-gray-100 dark:border-gray-700">
                 <!-- Header -->
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex-1 min-w-0">
-                        <h3 class="font-semibold text-gray-900 truncate group-hover:text-sky-600 transition">
+                        <h3 class="font-semibold text-gray-900 dark:text-white truncate group-hover:text-sky-600 dark:group-hover:text-sky-400 transition">
                             <?php echo e($site['name']); ?>
                         </h3>
-                        <div class="text-sm text-gray-500 truncate">
+                        <div class="text-sm text-gray-500 dark:text-gray-400 truncate">
                             <?php echo e($site['domain']); ?>
                         </div>
                     </div>
-                    <svg class="w-5 h-5 text-gray-400 group-hover:text-sky-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                 </div>
                 
                 <!-- Mini Sparkline Chart -->
-                <div class="h-20 mb-4">
+                <div class="h-20 mb-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg p-2">
                     <canvas id="<?php echo $chartId; ?>"></canvas>
                 </div>
                 
                 <!-- Today's Stats -->
                 <div class="flex items-baseline justify-between">
                     <div>
-                        <span class="text-2xl font-bold text-gray-900">
+                        <span class="text-2xl font-bold text-gray-900 dark:text-white">
                             <?php echo $todayStats['visitors_today']; ?>
                         </span>
-                        <span class="text-sm text-gray-500 ml-1">visitors today</span>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 ml-1">visitors today</span>
                     </div>
-                    <div class="text-sm font-medium <?php echo $todayStats['change'] >= 0 ? 'text-green-600' : 'text-red-600'; ?>">
+                    <div class="text-sm font-medium <?php echo $todayStats['change'] >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'; ?>">
                         <?php if ($todayStats['change'] > 0): ?>
                             ↑ <?php echo $todayStats['change']; ?>%
                         <?php elseif ($todayStats['change'] < 0): ?>

@@ -33,16 +33,16 @@ $deviceStats = getDeviceStats($siteId);
 <!-- Stats Cards -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <!-- Page Views -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
+    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
         <div class="flex items-center justify-between">
-            <div class="text-sm font-medium text-gray-600">Page Views</div>
+            <div class="text-sm font-medium text-gray-600 dark:text-gray-400">Page Views</div>
             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
             </svg>
         </div>
         <div class="mt-3">
-            <div class="text-3xl font-bold text-gray-900">
+            <div class="text-3xl font-bold text-gray-900 dark:text-white">
                 <?php echo formatNumber($stats['page_views_today']); ?>
             </div>
             <div class="text-sm mt-1">
@@ -56,7 +56,7 @@ $deviceStats = getDeviceStats($siteId);
     </div>
     
     <!-- Unique Visitors -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
+    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
         <div class="flex items-center justify-between">
             <div class="text-sm font-medium text-gray-600">Unique Visitors</div>
             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,13 +75,13 @@ $deviceStats = getDeviceStats($siteId);
     </div>
     
     <!-- Placeholder cards -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
+    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
         <div class="text-sm font-medium text-gray-600">Avg. Session</div>
         <div class="text-3xl font-bold text-gray-900 mt-3">-</div>
         <div class="text-sm mt-1 text-gray-500">Coming soon</div>
     </div>
     
-    <div class="bg-white rounded-xl shadow-sm p-6">
+    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
         <div class="text-sm font-medium text-gray-600">Bounce Rate</div>
         <div class="text-3xl font-bold text-gray-900 mt-3">-</div>
         <div class="text-sm mt-1 text-gray-500">Coming soon</div>
@@ -89,16 +89,16 @@ $deviceStats = getDeviceStats($siteId);
 </div>
 
 <!-- Visitors Chart -->
-<div class="bg-white rounded-xl shadow-sm p-6 mb-8">
-    <h3 class="font-semibold text-gray-900 mb-4">Visitors (Last 7 Days)</h3>
+<div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6 mb-8">
+    <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Visitors (Last 7 Days)</h3>
     <canvas id="visitors-chart"></canvas>
 </div>
 
 <!-- Two Column Layout -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
     <!-- Top Pages -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="font-semibold text-gray-900 mb-4">Top Pages</h3>
+    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Top Pages</h3>
         <div class="space-y-3">
             <?php if (empty($topPages)): ?>
                 <div class="text-center py-6 text-gray-500 text-sm">
@@ -106,20 +106,20 @@ $deviceStats = getDeviceStats($siteId);
                 </div>
             <?php else: ?>
                 <?php foreach ($topPages as $page): ?>
-                    <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
                         <div class="flex-1 min-w-0">
-                            <div class="text-sm font-medium text-gray-900 truncate">
+                            <div class="text-sm font-medium text-gray-900 dark:text-white truncate">
                                 <?php echo e($page['page_title'] ?: 'Untitled'); ?>
                             </div>
-                            <div class="text-xs text-gray-500 truncate">
+                            <div class="text-xs text-gray-500 dark:text-gray-400 truncate">
                                 <?php echo e($page['page_url']); ?>
                             </div>
                         </div>
                         <div class="ml-4 text-right">
-                            <div class="text-sm font-semibold text-gray-900">
+                            <div class="text-sm font-semibold text-gray-900 dark:text-white">
                                 <?php echo formatNumber($page['views']); ?>
                             </div>
-                            <div class="text-xs text-gray-500">
+                            <div class="text-xs text-gray-500 dark:text-gray-400">
                                 <?php echo formatNumber($page['unique_visitors']); ?> unique
                             </div>
                         </div>
@@ -130,8 +130,8 @@ $deviceStats = getDeviceStats($siteId);
     </div>
     
     <!-- Top Referrers -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="font-semibold text-gray-900 mb-4">Top Referrers</h3>
+    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Top Referrers</h3>
         <div class="space-y-3">
             <?php if (empty($topReferrers)): ?>
                 <div class="text-center py-6 text-gray-500 text-sm">
@@ -139,18 +139,18 @@ $deviceStats = getDeviceStats($siteId);
                 </div>
             <?php else: ?>
                 <?php foreach ($topReferrers as $ref): ?>
-                    <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
                         <div class="flex-1">
-                            <div class="text-sm font-medium text-gray-900">
+                            <div class="text-sm font-medium text-gray-900 dark:text-white">
                                 <?php echo e($ref['source'] === 'Direct' ? 'Direct' : getDomain($ref['source'])); ?>
                             </div>
                             <?php if ($ref['source'] !== 'Direct'): ?>
-                                <div class="text-xs text-gray-500 truncate">
+                                <div class="text-xs text-gray-500 dark:text-gray-400 truncate">
                                     <?php echo e(truncate($ref['source'], 40)); ?>
                                 </div>
                             <?php endif; ?>
                         </div>
-                        <div class="ml-4 text-sm font-semibold text-gray-900">
+                        <div class="ml-4 text-sm font-semibold text-gray-900 dark:text-white">
                             <?php echo formatNumber($ref['views']); ?>
                         </div>
                     </div>
@@ -163,18 +163,18 @@ $deviceStats = getDeviceStats($siteId);
 <!-- Browser & Device Stats -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     <!-- Browsers -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="font-semibold text-gray-900 mb-4">Browsers</h3>
+    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Browsers</h3>
         <div class="space-y-2">
             <?php foreach ($browserStats as $browser): ?>
                 <div class="flex items-center gap-3">
                     <div class="flex-1">
                         <div class="flex items-center justify-between mb-1">
-                            <span class="text-sm font-medium text-gray-700"><?php echo e($browser['browser']); ?></span>
-                            <span class="text-sm text-gray-600"><?php echo $browser['percentage']; ?>%</span>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300"><?php echo e($browser['browser']); ?></span>
+                            <span class="text-sm text-gray-600 dark:text-gray-400"><?php echo $browser['percentage']; ?>%</span>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-gradient-to-r from-turquoise to-sky h-2 rounded-full" style="width: <?php echo $browser['percentage']; ?>%"></div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-turquoise to-sky h-2 rounded-full" style="width: <?php echo $browser['percentage']; %>%"></div>
                         </div>
                     </div>
                 </div>
@@ -183,17 +183,17 @@ $deviceStats = getDeviceStats($siteId);
     </div>
     
     <!-- Devices -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="font-semibold text-gray-900 mb-4">Devices</h3>
+    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Devices</h3>
         <div class="space-y-2">
             <?php foreach ($deviceStats as $device): ?>
                 <div class="flex items-center gap-3">
                     <div class="flex-1">
                         <div class="flex items-center justify-between mb-1">
-                            <span class="text-sm font-medium text-gray-700 capitalize"><?php echo e($device['device']); ?></span>
-                            <span class="text-sm text-gray-600"><?php echo $device['percentage']; ?>%</span>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 capitalize"><?php echo e($device['device']); ?></span>
+                            <span class="text-sm text-gray-600 dark:text-gray-400"><?php echo $device['percentage']; ?>%</span>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                             <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style="width: <?php echo $device['percentage']; ?>%"></div>
                         </div>
                     </div>
@@ -208,6 +208,11 @@ $deviceStats = getDeviceStats($siteId);
 (function() {
     const ctx = document.getElementById('visitors-chart');
     if (!ctx) return;
+    
+    // Detect dark mode
+    const isDark = document.documentElement.classList.contains('dark');
+    const gridColor = isDark ? '#374151' : '#F1F5F9';
+    const textColor = isDark ? '#D1D5DB' : '#6B7280';
     
     new Chart(ctx, {
         type: 'line',
@@ -234,22 +239,28 @@ $deviceStats = getDeviceStats($siteId);
                     display: false
                 },
                 tooltip: {
-                    backgroundColor: '#0F172A',
+                    backgroundColor: isDark ? '#1F2937' : '#0F172A',
                     padding: 12,
                     cornerRadius: 8,
+                    titleColor: '#fff',
+                    bodyColor: '#fff'
                 }
             },
             scales: {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        precision: 0
+                        precision: 0,
+                        color: textColor
                     },
                     grid: {
-                        color: '#F1F5F9'
+                        color: gridColor
                     }
                 },
                 x: {
+                    ticks: {
+                        color: textColor
+                    },
                     grid: {
                         display: false
                     }

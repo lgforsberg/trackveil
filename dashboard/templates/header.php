@@ -1,9 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo isset($pageTitle) ? e($pageTitle) . ' - ' : ''; ?>Trackveil Dashboard</title>
+    
+    <!-- Initialize dark mode before page renders (prevents flash) -->
+    <script>
+        // Check localStorage or OS preference
+        const theme = localStorage.getItem('trackveil-theme');
+        if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
     
     <!-- Tailwind CSS with inline config -->
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
@@ -27,14 +36,15 @@
                             teal: '#14B8A6',
                             sky: '#38BDF8',
                             turquoise: '#2DD4BF',
-                            purple: '#6366F1',
-                        },
-                        boxShadow: {
-                            glow: '0 0 0 2px rgba(56,189,248,.25), 0 0 40px rgba(20,184,166,.25)'
-                        }
+                        purple: '#6366F1',
+                    },
+                    boxShadow: {
+                        glow: '0 0 0 2px rgba(56,189,248,.25), 0 0 40px rgba(20,184,166,.25)'
                     }
                 }
-            };
+            },
+            darkMode: 'class'
+        };
         }
     </script>
     
@@ -53,5 +63,5 @@
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
 
