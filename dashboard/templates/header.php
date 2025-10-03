@@ -5,26 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo isset($pageTitle) ? e($pageTitle) . ' - ' : ''; ?>Trackveil Dashboard</title>
     
-    <!-- Tailwind CSS -->
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <!-- Tailwind CSS with inline config -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .btn-gradient {
+                background-image: linear-gradient(135deg, #2DD4BF 0%, #38BDF8 100%);
+            }
+        }
+    </style>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: '#0F172A',
-                        slate2: '#1E293B',
-                        offwhite: '#F8FAFC',
-                        teal: '#14B8A6',
-                        sky: '#38BDF8',
-                        turquoise: '#2DD4BF',
-                        purple: '#6366F1',
-                    },
-                    boxShadow: {
-                        glow: '0 0 0 2px rgba(56,189,248,.25), 0 0 40px rgba(20,184,166,.25)'
+        // Wait for Tailwind to load before configuring
+        if (typeof tailwind !== 'undefined') {
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            navy: '#0F172A',
+                            slate2: '#1E293B',
+                            offwhite: '#F8FAFC',
+                            teal: '#14B8A6',
+                            sky: '#38BDF8',
+                            turquoise: '#2DD4BF',
+                            purple: '#6366F1',
+                        },
+                        boxShadow: {
+                            glow: '0 0 0 2px rgba(56,189,248,.25), 0 0 40px rgba(20,184,166,.25)'
+                        }
                     }
                 }
-            }
+            };
         }
     </script>
     
@@ -40,9 +50,6 @@
         }
         .htmx-request .htmx-indicator {
             display: inline-block;
-        }
-        .btn-gradient {
-            background-image: linear-gradient(135deg, #2DD4BF 0%, #38BDF8 100%);
         }
     </style>
 </head>

@@ -51,8 +51,8 @@ function getStats($siteId, $days = 30) {
             COUNT(*) FILTER (WHERE viewed_at::date = CURRENT_DATE) as today,
             COUNT(*) FILTER (WHERE viewed_at::date = CURRENT_DATE - 1) as yesterday
         FROM page_views
-        WHERE site_id = ? AND viewed_at > CURRENT_DATE - INTERVAL '? days'
-    ", [$siteId, $days]);
+        WHERE site_id = ? AND viewed_at > CURRENT_DATE - INTERVAL '30 days'
+    ", [$siteId]);
     
     // Unique visitors
     $visitors = queryOne("
@@ -60,8 +60,8 @@ function getStats($siteId, $days = 30) {
             COUNT(DISTINCT visitor_id) as total,
             COUNT(DISTINCT visitor_id) FILTER (WHERE viewed_at::date = CURRENT_DATE) as today
         FROM page_views
-        WHERE site_id = ? AND viewed_at > CURRENT_DATE - INTERVAL '? days'
-    ", [$siteId, $days]);
+        WHERE site_id = ? AND viewed_at > CURRENT_DATE - INTERVAL '30 days'
+    ", [$siteId]);
     
     // Calculate change percentages
     $viewsChange = 0;
@@ -89,10 +89,10 @@ function getVisitorsChartData($siteId, $days = 7) {
             COUNT(*) as views
         FROM page_views
         WHERE site_id = ? 
-        AND viewed_at > CURRENT_DATE - INTERVAL '? days'
+        AND viewed_at > CURRENT_DATE - INTERVAL '7 days'
         GROUP BY DATE(viewed_at)
         ORDER BY date
-    ", [$siteId, $days]);
+    ", [$siteId]);
 }
 
 /**
