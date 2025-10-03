@@ -45,7 +45,7 @@ require __DIR__ . '/../../templates/nav.php';
     <!-- Breadcrumb / Site Header -->
     <div class="mb-6">
         <?php if (count($sites) > 1): ?>
-            <a href="/app/sites-overview.php" class="text-sm text-gray-600 hover:text-gray-900 inline-flex items-center mb-3">
+            <a href="/app/sites-overview.php" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white inline-flex items-center mb-3 transition">
                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
@@ -55,10 +55,10 @@ require __DIR__ . '/../../templates/nav.php';
         
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900"><?php echo e($selectedSite['name']); ?></h1>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white"><?php echo e($selectedSite['name']); ?></h1>
                 <a href="https://<?php echo e($selectedSite['domain']); ?>" 
                    target="_blank"
-                   class="text-sm text-sky-600 hover:text-sky-700 hover:underline">
+                   class="text-sm text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 hover:underline transition">
                     <?php echo e($selectedSite['domain']); ?> ↗
                 </a>
             </div>
@@ -67,7 +67,7 @@ require __DIR__ . '/../../templates/nav.php';
                 <!-- Quick Site Switcher -->
                 <select 
                     onchange="window.location.href = '/app/site-detail.php?site=' + this.value"
-                    class="rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white shadow-sm hover:border-gray-400 focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                    class="rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm hover:border-gray-400 dark:hover:border-gray-500 focus:ring-2 focus:ring-sky-500 focus:border-transparent transition"
                 >
                     <?php foreach ($sites as $site): ?>
                         <option value="<?php echo e($site['id']); ?>" <?php echo $site['id'] === $selectedSiteId ? 'selected' : ''; ?>>

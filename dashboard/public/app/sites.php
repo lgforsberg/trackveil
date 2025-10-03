@@ -22,8 +22,8 @@ require __DIR__ . '/../../templates/nav.php';
 <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
     <div class="flex items-center justify-between mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">Your Sites</h1>
-            <p class="text-gray-600 mt-1">Manage your tracked websites</p>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Your Sites</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-1">Manage your tracked websites</p>
         </div>
         <!-- Phase 2: Add button to create sites via web UI -->
         <div class="text-sm text-gray-500">
@@ -33,7 +33,7 @@ require __DIR__ . '/../../templates/nav.php';
     
     <?php if (empty($sites)): ?>
         <!-- Empty State -->
-        <div class="bg-white rounded-xl shadow-sm p-12 text-center">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-12 text-center border border-gray-100 dark:border-gray-700">
             <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
             </svg>
@@ -51,10 +51,10 @@ require __DIR__ . '/../../templates/nav.php';
                 // Get basic stats for this site
                 $siteStats = getStats($site['id'], 7); 
                 ?>
-                <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition">
+                <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6 hover:shadow-md transition">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex-1">
-                            <h3 class="font-semibold text-gray-900 mb-1">
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-1">
                                 <?php echo e($site['name']); ?>
                             </h3>
                             <a href="https://<?php echo e($site['domain']); ?>" 
@@ -74,20 +74,20 @@ require __DIR__ . '/../../templates/nav.php';
                     <!-- Quick Stats -->
                     <div class="space-y-2 mb-4">
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">Page Views (7d):</span>
-                            <span class="font-semibold text-gray-900"><?php echo formatNumber($siteStats['page_views']); ?></span>
+                            <span class="text-gray-600 dark:text-gray-400">Page Views (7d):</span>
+                            <span class="font-semibold text-gray-900 dark:text-white"><?php echo formatNumber($siteStats['page_views']); ?></span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">Unique Visitors (7d):</span>
-                            <span class="font-semibold text-gray-900"><?php echo formatNumber($siteStats['unique_visitors']); ?></span>
+                            <span class="text-gray-600 dark:text-gray-400">Unique Visitors (7d):</span>
+                            <span class="font-semibold text-gray-900 dark:text-white"><?php echo formatNumber($siteStats['unique_visitors']); ?></span>
                         </div>
                     </div>
                     
                     <!-- Site ID (for installation) -->
-                    <div class="pt-4 border-t border-gray-100">
-                        <div class="text-xs text-gray-500 mb-1">Site ID:</div>
+                    <div class="pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Site ID:</div>
                         <div class="flex items-center gap-2">
-                            <code class="flex-1 text-xs bg-gray-100 px-2 py-1 rounded font-mono truncate">
+                            <code class="flex-1 text-xs bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-300 px-2 py-1 rounded font-mono truncate">
                                 <?php echo e($site['id']); ?>
                             </code>
                             <button 

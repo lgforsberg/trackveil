@@ -40,16 +40,16 @@ require __DIR__ . '/../../templates/nav.php';
 ?>
 
 <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-4xl">
-    <h1 class="text-3xl font-bold text-gray-900 mb-8">Account Settings</h1>
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Account Settings</h1>
     
     <!-- Account Information -->
-    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-        <h2 class="text-xl font-semibold text-gray-900 mb-4">Account Information</h2>
+    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Account Information</h2>
         
         <div class="space-y-3">
-            <div class="flex justify-between py-2 border-b border-gray-100">
-                <span class="text-sm text-gray-600">Account Name:</span>
-                <span class="text-sm font-semibold text-gray-900"><?php echo e($account['name']); ?></span>
+            <div class="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Account Name:</span>
+                <span class="text-sm font-semibold text-gray-900 dark:text-white"><?php echo e($account['name']); ?></span>
             </div>
             
             <div class="flex justify-between py-2 border-b border-gray-100">
@@ -70,20 +70,20 @@ require __DIR__ . '/../../templates/nav.php';
     </div>
     
     <!-- Users -->
-    <div class="bg-white rounded-xl shadow-sm p-6">
-        <h2 class="text-xl font-semibold text-gray-900 mb-4">Team Members</h2>
+    <div class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-sm p-6">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Team Members</h2>
         
         <div class="space-y-3">
             <?php foreach ($users as $u): ?>
-                <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                <div class="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-700 last:border-0">
                     <div class="flex-1">
-                        <div class="font-medium text-gray-900">
+                        <div class="font-medium text-gray-900 dark:text-white">
                             <?php echo e($u['name'] ?: 'No name'); ?>
                             <?php if ($u['id'] === $user['id']): ?>
                                 <span class="ml-2 text-xs bg-sky-100 text-sky-700 px-2 py-1 rounded">You</span>
                             <?php endif; ?>
                         </div>
-                        <div class="text-sm text-gray-600"><?php echo e($u['email']); ?></div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400"><?php echo e($u['email']); ?></div>
                     </div>
                     <div class="text-right">
                         <div class="text-xs text-gray-500">Joined: <?php echo formatDate($u['created_at'], 'M Y'); ?></div>
@@ -95,8 +95,8 @@ require __DIR__ . '/../../templates/nav.php';
             <?php endforeach; ?>
         </div>
         
-        <div class="mt-6 pt-6 border-t border-gray-200">
-            <p class="text-sm text-gray-600">
+        <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <p class="text-sm text-gray-600 dark:text-gray-400">
                 <strong>Phase 2:</strong> Invite team members, manage permissions, and more.
             </p>
         </div>
