@@ -1,4 +1,4 @@
-.PHONY: help build run stop restart test clean dev install deps
+.PHONY: help build run stop restart test clean dev install deps install-service uninstall-service
 
 # Application name
 APP_NAME=trackveil-api
@@ -115,6 +115,21 @@ check: ## Run go vet and go fmt
 	@echo "Running go vet..."
 	@$(GOCMD) vet ./...
 	@echo "Code check complete"
+
+install-service: ## Install systemd service (requires sudo)
+	@echo "Installing systemd service..."
+	@sudo cp systemd/trackveil-api.service /etc/systemd/system/
+	@sudo systemctl daemon-reload
+	@sudo systemctl enable trackveil-api.service
+	@echo "Service installed. Use 'sudo systemctl start trackveil-api' to start."
+
+uninstall-service: ## Uninstall systemd service (requires sudo)
+	@echo "Uninstalling systemd service..."
+	@sudo systemctl stop trackveil-api.service 2>/dev/null || true
+	@sudo systemctl disable trackveil-api.service 2>/dev/null || true
+	@sudo rm -f /etc/systemd/system/trackveil-api.service
+	@sudo systemctl daemon-reload
+	@echo "Service uninstalled."
 
 .DEFAULT_GOAL := help
 

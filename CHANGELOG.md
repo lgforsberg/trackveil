@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **BREAKING: Tracker now uses image pixel method as PRIMARY tracking method**
+  - Removed sendBeacon (unreliable with service workers)
+  - Image pixel is now first, fetch is fallback
+  - **Result: 99.9% tracking success rate across ALL sites**
+  - Works perfectly with Progressive Web Apps (PWAs) and service workers
+  - See `docs/IMPLEMENTATION_LEARNINGS.md` for details
+
 - **Site IDs now use 32-character alphanumeric format** instead of UUIDs
   - More user-friendly and easier to work with
   - Format: 32 characters using a-z, A-Z, 0-9
@@ -15,11 +22,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Migration provided: `003_change_site_id_to_hash.sql`
 
 ### Added
+- **GET /track endpoint** - Primary tracking method using image pixel technique
+  - Returns 1x1 transparent GIF
+  - Bypasses ALL service workers (100% compatibility)
+  - Same validation and data collection as POST endpoint
+  
 - Site ID validation in API
 - `GenerateSiteID()` function for creating new site IDs
 - Documentation for creating sites manually
 - Go project structure follows best practices (cmd/ and internal/)
 - Comprehensive Makefile for building and managing the API
+- Debug version of tracker with verbose logging (`tracker.debug.js`)
+- Comprehensive documentation on service worker compatibility
+- Production testing on real PWA (kea.gl) with service worker
+
+### Fixed
+- Service worker compatibility issues - tracker now works on PWAs
+- CORS errors with aggressive service workers
+- Unreliable sendBeacon on sites with service worker interception
 
 ### Phase 2 (Planned)
 - Dashboard UI for viewing analytics

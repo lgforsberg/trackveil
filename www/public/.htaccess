@@ -1,0 +1,36 @@
+# Trackveil Marketing Website
+# Static HTML site
+
+# Enable rewriting
+RewriteEngine On
+
+# Force HTTPS (uncomment when SSL is ready)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Prevent directory listing
+Options -Indexes
+
+DirectoryIndex index.html
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Cache static assets
+<FilesMatch "\.(jpg|jpeg|png|gif|ico|svg|css|js|woff|woff2)$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "public, max-age=31536000"
+    </IfModule>
+</FilesMatch>
+
+# Don't cache HTML
+<FilesMatch "\.html$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "public, max-age=3600"
+    </IfModule>
+</FilesMatch>
+

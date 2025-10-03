@@ -1,0 +1,23 @@
+[Unit]
+Description=Trackveil API Service
+After=network.target
+
+[Service]
+Type=simple
+User=lg
+Group=lg
+WorkingDirectory=/home/lg/bin/trackveil/api
+ExecStart=/home/lg/bin/trackveil/api/bin/trackveil-api
+Restart=on-failure
+RestartSec=5s
+
+# Environment
+EnvironmentFile=/home/lg/bin/trackveil/api/.env
+
+# Logging
+StandardOutput=append:/home/lg/bin/trackveil/api/logs/api.log
+StandardError=append:/home/lg/bin/trackveil/api/logs/api.log
+
+[Install]
+WantedBy=multi-user.target
+

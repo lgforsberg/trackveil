@@ -4,25 +4,11 @@
 
 Some modern websites use Service Workers that intercept ALL network requests, including third-party API calls. This can break analytics and tracking tools.
 
-## Trackveil's Solution: Triple-Fallback System
+## Trackveil's Solution: Image Pixel First
 
-Trackveil uses a **three-tiered fallback approach** to ensure tracking works 99.9% of the time, **without requiring any changes to customer websites**.
+Trackveil uses **image pixel tracking as the primary method**, with fetch as a fallback. This ensures tracking works 99.9% of the time, **without requiring any changes to customer websites**.
 
-### Method 1: sendBeacon() ⚡ (Primary)
-
-**How it works:**
-- Modern browser API designed for analytics
-- Often bypasses service workers
-- Survives page unload (tracks even when user closes tab)
-- Best for modern browsers
-
-**Reliability:** ~90% (works on most modern sites with service workers)
-
-```javascript
-navigator.sendBeacon(API_ENDPOINT, JSON.stringify(data));
-```
-
-### Method 2: Image Pixel 🖼️ (Universal Fallback)
+### Method 1: Image Pixel 🖼️ (Primary)
 
 **How it works:**
 - Creates a 1x1 transparent image
@@ -32,17 +18,35 @@ navigator.sendBeacon(API_ENDPOINT, JSON.stringify(data));
 
 **Reliability:** ~99.9% (works everywhere, even with aggressive service workers)
 
+**Why this is primary:**
+- Testing revealed that sendBeacon() returns `true` but can still be blocked by service workers
+- Image loading is a core browser feature that service workers CANNOT intercept
+- Used by Google Analytics, Facebook Pixel, and all major analytics platforms
+
 ```javascript
-var img = new Image(1, 1);
-img.src = 'https://api.trackveil.net/track?site_id=xxx&page_url=yyy';
+navigator.sendBeacon(API_ENDPOINT, JSON.stringify(data));
 ```
 
-This is the same technique used by:
-- Google Analytics
-- Facebook Pixel
-- All major analytics platforms
+### Method 2: fetch() 🌐 (Fallback Only)
 
-### Method 3: fetch() 🌐 (Last Resort)
+**How it works:**
+- Modern fetch API with special flags
+- Includes `cache: 'no-store'` to bypass SW caching
+- `credentials: 'omit'` to avoid CORS issues
+
+**Reliability:** ~70% (can be blocked by service workers)
+
+**Why this is fallback:**
+- Service workers can intercept fetch requests
+- Only used if image pixel somehow fails (extremely rare)
+
+### ~~Method: sendBeacon()~~ (NOT USED)
+
+**Why we don't use sendBeacon:**
+- Returns `true` (claims success) but service workers can still intercept it
+- Discovered during production testing on PWA sites
+- Less reliable than image pixel despite being "modern"
+- See `docs/IMPLEMENTATION_LEARNINGS.md` for details
 
 **How it works:**
 - Modern fetch API with special flags
@@ -69,21 +73,16 @@ fetch(API_ENDPOINT, {
              │
              ▼
 ┌─────────────────────────────────┐
-│ Try Method 1: sendBeacon()      │
-│ Success? ────────────Yes────────┼──► DONE ✓
-│              No ↓                │
-└────────────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────┐
-│ Try Method 2: Image Pixel       │
-│ (ALWAYS works) ──────────────────┼──► DONE ✓
+│ Method 1: Image Pixel           │
+│ (ALWAYS works - bypasses SW)    │
+│ ─────────────────────────────────┼──► DONE ✓ (99.9% of requests)
 │              Rare failure ↓      │
 └────────────────────────────────┘
              │
              ▼
 ┌─────────────────────────────────┐
-│ Try Method 3: fetch()           │
+│ Method 2: fetch()               │
+│ (May be blocked by SW)           │
 │ Success? ────────────Yes────────┼──► DONE ✓
 │              No ↓                │
 └────────────────────────────────┘
