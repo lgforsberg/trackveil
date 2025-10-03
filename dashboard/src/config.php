@@ -4,25 +4,31 @@
  * PHP 7.2 compatible
  */
 
-// Load environment variables from .env file
-function loadEnv($file = __DIR__ . '/../.env') {
-    if (!file_exists($file)) {
-        return;
-    }
-    
-    $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        if (strpos(trim($line), '#') === 0) {
-            continue; // Skip comments
+// Load environment variables from .env file (only declare once)
+if (!function_exists('loadEnv')) {
+    function loadEnv($file = __DIR__ . '/../.env') {
+        if (!file_exists($file)) {
+            return;
         }
         
-        list($key, $value) = explode('=', $line, 2);
-        $key = trim($key);
-        $value = trim($value);
-        
-        if (!array_key_exists($key, $_ENV)) {
-            $_ENV[$key] = $value;
-            putenv("$key=$value");
+        $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos(trim($line), '#') === 0) {
+                continue; // Skip comments
+            }
+            
+            if (strpos($line, '=') === false) {
+                continue; // Skip lines without =
+            }
+            
+            list($key, $value) = explode('=', $line, 2);
+            $key = trim($key);
+            $value = trim($value);
+            
+            if (!array_key_exists($key, $_ENV)) {
+                $_ENV[$key] = $value;
+                putenv("$key=$value");
+            }
         }
     }
 }
