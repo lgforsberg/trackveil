@@ -84,10 +84,10 @@ require __DIR__ . '/../../templates/nav.php';
     
     <!-- Combined Stats (All Sites) -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-gradient-to-br from-sky-500 to-sky-600 text-white rounded-xl shadow-lg p-6">
-            <div class="text-sm opacity-90 mb-1">Total Views Today</div>
-            <div class="text-3xl font-bold"><?php echo formatNumber($combinedStats['views_today']); ?></div>
-            <div class="text-sm mt-1 opacity-75">
+        <div class="bg-white dark:bg-gradient-to-br dark:from-sky-500 dark:to-sky-600 border border-gray-200 dark:border-transparent rounded-xl shadow-lg p-6">
+            <div class="text-sm text-gray-600 dark:text-white/90 mb-1">Total Views Today</div>
+            <div class="text-3xl font-bold text-gray-900 dark:text-white"><?php echo formatNumber($combinedStats['views_today']); ?></div>
+            <div class="text-sm mt-1 text-gray-500 dark:text-white/75">
                 <?php echo $viewsChange > 0 ? '↑' : ($viewsChange < 0 ? '↓' : '→'); ?> 
                 <?php echo abs($viewsChange); ?>% vs yesterday
             </div>
@@ -99,16 +99,16 @@ require __DIR__ . '/../../templates/nav.php';
             <div class="text-sm mt-1 opacity-75">across all sites</div>
         </div>
         
-        <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl shadow-lg p-6">
-            <div class="text-sm opacity-90 mb-1">Active Sites</div>
-            <div class="text-3xl font-bold"><?php echo $combinedStats['active_sites_today']; ?></div>
-            <div class="text-sm mt-1 opacity-75">received traffic today</div>
+        <div class="bg-white dark:bg-gradient-to-br dark:from-purple-500 dark:to-purple-600 border border-gray-200 dark:border-transparent rounded-xl shadow-lg p-6">
+            <div class="text-sm text-gray-600 dark:text-white/90 mb-1">Active Sites</div>
+            <div class="text-3xl font-bold text-gray-900 dark:text-white"><?php echo $combinedStats['active_sites_today']; ?></div>
+            <div class="text-sm mt-1 text-gray-500 dark:text-white/75">received traffic today</div>
         </div>
         
-        <div class="bg-gradient-to-br from-gray-600 to-gray-700 text-white rounded-xl shadow-lg p-6">
-            <div class="text-sm opacity-90 mb-1">Total Sites</div>
-            <div class="text-3xl font-bold"><?php echo count($sites); ?></div>
-            <div class="text-sm mt-1 opacity-75">in your account</div>
+        <div class="bg-white dark:bg-gradient-to-br dark:from-gray-600 dark:to-gray-700 border border-gray-200 dark:border-transparent rounded-xl shadow-lg p-6">
+            <div class="text-sm text-gray-600 dark:text-white/90 mb-1">Total Sites</div>
+            <div class="text-3xl font-bold text-gray-900 dark:text-white"><?php echo count($sites); ?></div>
+            <div class="text-sm mt-1 text-gray-500 dark:text-white/75">in your account</div>
         </div>
     </div>
     

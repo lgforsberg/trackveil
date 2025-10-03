@@ -174,7 +174,7 @@ $deviceStats = getDeviceStats($siteId);
                             <span class="text-sm text-gray-600 dark:text-gray-400"><?php echo $browser['percentage']; ?>%</span>
                         </div>
                         <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="bg-gradient-to-r from-turquoise to-sky h-2 rounded-full" style="width: <?php echo $browser['percentage']; %>%"></div>
+                            <div class="h-2 rounded-full" style="width: <?php echo $browser['percentage']; ?>%; background: linear-gradient(to right, #2DD4BF, #38BDF8);"></div>
                         </div>
                     </div>
                 </div>
@@ -194,7 +194,7 @@ $deviceStats = getDeviceStats($siteId);
                             <span class="text-sm text-gray-600 dark:text-gray-400"><?php echo $device['percentage']; ?>%</span>
                         </div>
                         <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style="width: <?php echo $device['percentage']; ?>%"></div>
+                            <div class="h-2 rounded-full" style="width: <?php echo $device['percentage']; ?>%; background: linear-gradient(to right, #A855F7, #EC4899);"></div>
                         </div>
                     </div>
                 </div>
