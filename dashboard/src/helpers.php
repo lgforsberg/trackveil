@@ -80,14 +80,27 @@ function getDomain($url) {
 
 /**
  * Format change indicator
+ * For use on colored gradient backgrounds (white text works best)
  */
-function changeIndicator($change) {
-    if ($change > 0) {
-        return '<span class="text-green-600">+' . number_format($change, 1) . '%</span>';
-    } elseif ($change < 0) {
-        return '<span class="text-red-600">' . number_format($change, 1) . '%</span>';
+function changeIndicator($change, $onGradient = false) {
+    if ($onGradient) {
+        // For gradient backgrounds, use lighter colors with opacity
+        if ($change > 0) {
+            return '<span class="text-white/90">+' . number_format($change, 1) . '%</span>';
+        } elseif ($change < 0) {
+            return '<span class="text-white/90">' . number_format($change, 1) . '%</span>';
+        } else {
+            return '<span class="text-white/75">0%</span>';
+        }
     } else {
-        return '<span class="text-gray-600">0%</span>';
+        // For regular backgrounds
+        if ($change > 0) {
+            return '<span class="text-green-600 dark:text-green-400">+' . number_format($change, 1) . '%</span>';
+        } elseif ($change < 0) {
+            return '<span class="text-red-600 dark:text-red-400">' . number_format($change, 1) . '%</span>';
+        } else {
+            return '<span class="text-gray-600 dark:text-gray-400">0%</span>';
+        }
     }
 }
 

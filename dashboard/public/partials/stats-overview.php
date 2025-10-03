@@ -45,9 +45,9 @@ $deviceStats = getDeviceStats($siteId);
             <div class="text-3xl font-bold">
                 <?php echo formatNumber($stats['page_views_today']); ?>
             </div>
-            <div class="text-sm mt-1 opacity-75">
-                <?php echo changeIndicator($stats['views_change']); ?>
-                <span>vs yesterday</span>
+            <div class="text-sm mt-1 opacity-90">
+                <?php echo changeIndicator($stats['views_change'], true); ?>
+                <span class="opacity-75">vs yesterday</span>
             </div>
         </div>
         <div class="mt-3 text-xs opacity-75">
