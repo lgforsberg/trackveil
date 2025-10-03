@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TrackVeil — Simple Visitor Tracking</title>
-  <!-- Tailwind via CDN for quick prototyping; swap to a build step for production -->
+  <title>Trackveil — Analytics that actually works. Everywhere.</title>
+  <meta name="description" content="Simple visitor tracking with 99.9% reliability. Works on Progressive Web Apps, no cookies needed, beautiful dashboard. Start free forever.">
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // Tailwind runtime config (extend colors to match design manual)
     tailwind.config = {
       theme: {
         extend: {
@@ -15,7 +15,6 @@
             navy: '#0F172A',
             slate2: '#1E293B',
             offwhite: '#F8FAFC',
-            graylite: '#CBD5E1',
             teal: '#14B8A6',
             sky: '#38BDF8',
             turquoise: '#2DD4BF',
@@ -23,271 +22,714 @@
           },
           boxShadow: {
             glow: '0 0 0 2px rgba(56,189,248,.25), 0 0 40px rgba(20,184,166,.25)'
-          },
-          borderRadius: {
-            '2xl': '1.25rem',
           }
         }
       },
       darkMode: 'class'
     }
   </script>
+  
   <style>
-    /* Simple gradient helpers */
-    .btn-gradient { background-image: linear-gradient(135deg, #2DD4BF 0%, #38BDF8 100%); }
-    .section-gradient { background: radial-gradient(1000px 500px at 20% 0%, rgba(99,102,241,.15), rgba(15,23,42,0) 60%),
-                                   radial-gradient(800px 400px at 100% 20%, rgba(56,189,248,.10), rgba(15,23,42,0) 60%); }
+    .btn-gradient { background: linear-gradient(135deg, #2DD4BF 0%, #38BDF8 100%); }
+    .section-gradient { 
+      background: radial-gradient(1000px 500px at 20% 0%, rgba(56,189,248,.12), transparent 60%),
+                  radial-gradient(800px 400px at 100% 20%, rgba(45,212,191,.08), transparent 60%); 
+    }
   </style>
+  
+  <!-- Initialize dark mode -->
+  <script>
+    const theme = localStorage.getItem('trackveil-theme');
+    if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
 </head>
-<body class="bg-offwhite text-slate-800 selection:bg-sky/20">
-  <!-- Dark mode toggle -->
-  <div class="fixed right-4 top-4 z-50">
-    <button id="themeToggle" aria-label="Toggle dark mode" class="rounded-full border border-slate-300/60 bg-white/70 backdrop-blur px-3 py-2 text-sm shadow hover:shadow-md transition">
-      Toggle Dark
-    </button>
-  </div>
 
-  <!-- NAV -->
-  <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 dark:bg-navy/70 dark:text-white border-b border-slate-200/60 dark:border-white/10">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <a href="#" class="flex items-center gap-3 group">
-          <!-- Inline SVG radar icon -->
-          <div class="p-2 rounded-2xl bg-slate-900 text-sky-300 shadow-glow group-hover:shadow transition">
-            <svg viewBox="0 0 64 64" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="32" cy="32" r="20" stroke="url(#g1)" stroke-width="4"/>
-              <circle cx="32" cy="32" r="12" stroke="url(#g1)" stroke-width="4" opacity=".6"/>
-              <path d="M32 32 L50 20" stroke="url(#g1)" stroke-width="6" stroke-linecap="round"/>
-              <circle cx="26" cy="38" r="3" fill="#38BDF8"/>
-              <circle cx="36" cy="28" r="3" fill="#2DD4BF"/>
-              <circle cx="44" cy="36" r="3" fill="#38BDF8"/>
-              <defs>
-                <linearGradient id="g1" x1="12" y1="52" x2="52" y2="12" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#2DD4BF"/>
-                  <stop offset="1" stop-color="#38BDF8"/>
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
-          <span class="font-semibold text-lg tracking-tight">TrackVeil</span>
-        </a>
-        <nav class="hidden md:flex items-center gap-8 text-sm">
-          <a href="#features" class="hover:text-sky-600 dark:hover:text-sky-300">Features</a>
-          <a href="#pricing" class="hover:text-sky-600 dark:hover:text-sky-300">Pricing</a>
-          <a href="#faq" class="hover:text-sky-600 dark:hover:text-sky-300">FAQ</a>
-        </nav>
-        <div class="flex items-center gap-3">
-          <a href="#" class="hidden sm:inline-block rounded-lg border border-slate-300 px-4 py-2 text-sm hover:shadow">Learn More</a>
-          <a href="#signup" class="rounded-lg px-4 py-2 text-sm text-white btn-gradient shadow hover:shadow-glow">Get Started</a>
-        </div>
-      </div>
-    </div>
-  </header>
+<body class="bg-white dark:bg-navy text-gray-900 dark:text-white transition-colors duration-200">
 
-  <!-- HERO -->
-  <section class="relative overflow-hidden bg-white dark:bg-navy dark:text-white section-gradient">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-28 grid lg:grid-cols-2 gap-12 items-center">
-      <div>
-        <span class="inline-flex items-center gap-2 rounded-full bg-teal/10 px-3 py-1 text-teal text-xs font-medium ring-1 ring-teal/30">Simple Visitor Tracking</span>
-        <h1 class="mt-6 text-4xl sm:text-5xl font-extrabold tracking-tight">Track your visitors. Quietly.</h1>
-        <p class="mt-4 text-slate-600 dark:text-slate-300 text-lg max-w-prose">A lightweight tracker that reveals insights without clutter. One line of code, privacy-respectful analytics, and dashboards you actually want to open.</p>
-        <div class="mt-8 flex flex-wrap items-center gap-3">
-          <a href="#signup" class="rounded-xl px-6 py-3 text-white btn-gradient shadow hover:shadow-glow">Get Started Free</a>
-          <a href="#how-it-works" class="rounded-xl px-6 py-3 border border-slate-300/70 dark:border-white/20 hover:shadow">How it works</a>
-        </div>
-        <p class="mt-4 text-xs text-slate-500 dark:text-slate-400">No cookies by default · <span class="underline decoration-dotted">GDPR-friendly</span> · Lightweight snippet</p>
-      </div>
-      <div class="relative">
-        <div class="mx-auto max-w-md rounded-2xl bg-slate-900 p-8 shadow-xl ring-1 ring-white/10">
-          <!-- Mock demo card with dot graph aesthetic -->
-          <div class="flex items-start justify-between">
-            <div>
-              <h3 class="text-white font-semibold">Live Visitors</h3>
-              <p class="text-slate-400 text-sm">last 5 minutes</p>
-            </div>
-            <span class="text-emerald-400 text-sm">+12%</span>
-          </div>
-          <div class="mt-5 h-44 rounded-xl bg-gradient-to-b from-slate-800 to-slate-900 relative overflow-hidden">
-            <svg viewBox="0 0 400 140" class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="dotGrad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#2DD4BF"/>
-                  <stop offset="100%" stop-color="#38BDF8"/>
-                </linearGradient>
-              </defs>
-              <polyline fill="none" stroke="#38BDF880" stroke-width="2" points="0,120 60,110 110,100 160,70 210,85 260,60 310,50 360,40 400,35"/>
-              <g fill="url(#dotGrad)">
-                <circle cx="60" cy="110" r="4"/>
-                <circle cx="110" cy="100" r="4"/>
-                <circle cx="160" cy="70" r="5"/>
-                <circle cx="210" cy="85" r="4"/>
-                <circle cx="260" cy="60" r="5"/>
-                <circle cx="310" cy="50" r="4"/>
-                <circle cx="360" cy="40" r="5"/>
-              </g>
-            </svg>
-          </div>
-          <div class="mt-5 grid grid-cols-3 gap-3 text-slate-300 text-sm">
-            <div class="rounded-lg bg-slate-800 p-3">
-              <div class="text-xs text-slate-400">Visitors</div>
-              <div class="text-lg font-semibold">1,284</div>
-            </div>
-            <div class="rounded-lg bg-slate-800 p-3">
-              <div class="text-xs text-slate-400">Bounce</div>
-              <div class="text-lg font-semibold">32%</div>
-            </div>
-            <div class="rounded-lg bg-slate-800 p-3">
-              <div class="text-xs text-slate-400">Avg. Time</div>
-              <div class="text-lg font-semibold">2m 11s</div>
-            </div>
-          </div>
-        </div>
-        <div class="absolute -bottom-6 -right-6 blur-2xl w-52 h-52 rounded-full bg-sky/20"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section id="features" class="py-20 bg-offwhite text-slate-800 dark:bg-slate2 dark:text-white">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="rounded-2xl border border-slate-200/70 dark:border-white/10 p-6 bg-white/70 dark:bg-white/5">
-          <div class="text-teal mb-3 font-semibold">Instant Tracking</div>
-          <p class="text-slate-600 dark:text-slate-300">Add one line of code and start seeing live visitor data immediately. No complex setup.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200/70 dark:border-white/10 p-6 bg-white/70 dark:bg-white/5">
-          <div class="text-sky mb-3 font-semibold">Clear Insights</div>
-          <p class="text-slate-600 dark:text-slate-300">Get meaningful metrics without overwhelming dashboards. Focus on what matters.</p>
-        </div>
-        <div class="rounded-2xl border border-slate-200/70 dark:border-white/10 p-6 bg-white/70 dark:bg-white/5">
-          <div class="text-purple mb-3 font-semibold">Privacy‑Respectful</div>
-          <p class="text-slate-600 dark:text-slate-300">Lightweight, secure, and built with user privacy in mind. GDPR‑friendly defaults.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING -->
-  <section id="pricing" class="py-20 bg-white dark:bg-navy dark:text-white">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold tracking-tight">Simple pricing</h2>
-        <p class="text-slate-600 dark:text-slate-300">Start free, grow when you need to.</p>
-      </div>
-      <div class="grid md:grid-cols-3 gap-6">
-        <div class="rounded-2xl border border-slate-200 dark:border-white/10 p-8 bg-white/70 dark:bg-white/5">
-          <div class="text-sm font-semibold text-slate-600 dark:text-slate-300">Free</div>
-          <div class="mt-4 text-4xl font-extrabold">€0</div>
-          <ul class="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-            <li>5k pageviews / mo</li>
-            <li>Core metrics</li>
-            <li>Email support</li>
-          </ul>
-          <a href="#signup" class="mt-6 inline-block rounded-lg border px-4 py-2 hover:shadow">Choose Free</a>
-        </div>
-        <div class="rounded-2xl border border-slate-200 dark:border-white/10 p-8 bg-white shadow-lg ring-2 ring-sky/20 dark:bg-slate-900">
-          <div class="text-sm font-semibold text-sky">Pro</div>
-          <div class="mt-4 text-4xl font-extrabold">€14<span class="text-base font-semibold">/mo</span></div>
-          <ul class="mt-4 space-y-2 text-sm text-slate-700 dark:text-slate-300">
-            <li>100k pageviews / mo</li>
-            <li>Advanced insights</li>
-            <li>Priority support</li>
-          </ul>
-          <a href="#signup" class="mt-6 inline-block rounded-xl px-5 py-2 text-white btn-gradient shadow hover:shadow-glow">Choose Pro</a>
-        </div>
-        <div class="rounded-2xl border border-slate-200 dark:border-white/10 p-8 bg-white/70 dark:bg-white/5">
-          <div class="text-sm font-semibold text-purple">Enterprise</div>
-          <div class="mt-4 text-4xl font-extrabold">Custom</div>
-          <ul class="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-            <li>Unlimited pageviews</li>
-            <li>Custom integrations</li>
-            <li>SLA & SSO</li>
-          </ul>
-          <a href="#contact" class="mt-6 inline-block rounded-lg border px-4 py-2 hover:shadow">Contact Sales</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq" class="py-20 bg-offwhite text-slate-800 dark:bg-slate2 dark:text-white">
-    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold tracking-tight text-center mb-10">FAQs</h2>
-      <div class="space-y-6">
-        <details class="group rounded-xl border border-slate-200/70 dark:border-white/10 p-6 bg-white/70 dark:bg-white/5">
-          <summary class="cursor-pointer font-semibold">How do I install TrackVeil?</summary>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Paste a single <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">&lt;script&gt;</code> tag before the closing <code>&lt;/body&gt;</code>. That’s it.</p>
-        </details>
-        <details class="group rounded-xl border border-slate-200/70 dark:border-white/10 p-6 bg-white/70 dark:bg-white/5">
-          <summary class="cursor-pointer font-semibold">Is it privacy-friendly?</summary>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Yes. No cookies by default, IP anonymization options, and EU-only data hosting available.</p>
-        </details>
-        <details class="group rounded-xl border border-slate-200/70 dark:border-white/10 p-6 bg-white/70 dark:bg-white/5">
-          <summary class="cursor-pointer font-semibold">Can I migrate from Google Analytics?</summary>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">You can import past CSV exports and map key metrics. We’ll guide you through it.</p>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- FINAL CTA -->
-  <section class="py-20 bg-white dark:bg-navy dark:text-white">
-    <div class="mx-auto max-w-4xl text-center px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold tracking-tight">Start tracking smarter today.</h2>
-      <p class="mt-3 text-slate-600 dark:text-slate-300">TrackVeil makes it simple to know your visitors — without noise.</p>
-      <a href="#signup" class="mt-6 inline-block rounded-xl px-6 py-3 text-white btn-gradient shadow hover:shadow-glow">Get Started Free</a>
-    </div>
-  </section>
-
-  <footer class="py-12 bg-offwhite text-slate-700 dark:bg-slate2 dark:text-slate-300">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+<!-- NAV -->
+<header class="sticky top-0 z-50 backdrop-blur bg-white/80 dark:bg-navy/80 border-b border-gray-200/60 dark:border-gray-700/60">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <img src="/img/icon_64.png" alt="Trackveil" width="40" height="40" class="rounded-xl">
+        <span class="font-semibold text-lg">Trackveil</span>
+      </a>
+      
+      <nav class="hidden md:flex items-center gap-8 text-sm">
+        <a href="#features" class="hover:text-sky-600 dark:hover:text-sky-400 transition">Features</a>
+        <a href="#pricing" class="hover:text-sky-600 dark:hover:text-sky-400 transition">Pricing</a>
+        <a href="#faq" class="hover:text-sky-600 dark:hover:text-sky-400 transition">FAQ</a>
+      </nav>
+      
       <div class="flex items-center gap-3">
-        <div class="p-2 rounded-2xl bg-slate-900 text-sky-300">
-          <!-- small logo -->
-          <svg viewBox="0 0 64 64" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="32" cy="32" r="20" stroke="url(#g2)" stroke-width="4"/>
-            <circle cx="32" cy="32" r="12" stroke="url(#g2)" stroke-width="4" opacity=".6"/>
-            <path d="M32 32 L50 20" stroke="url(#g2)" stroke-width="6" stroke-linecap="round"/>
-            <circle cx="26" cy="38" r="3" fill="#38BDF8"/>
-            <circle cx="36" cy="28" r="3" fill="#2DD4BF"/>
-            <circle cx="44" cy="36" r="3" fill="#38BDF8"/>
-            <defs>
-              <linearGradient id="g2" x1="12" y1="52" x2="52" y2="12" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#2DD4BF"/>
-                <stop offset="1" stop-color="#38BDF8"/>
-              </linearGradient>
-            </defs>
+        <!-- Dark mode toggle -->
+        <button id="themeToggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition" aria-label="Toggle dark mode">
+          <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </svg>
+        </button>
+        
+        <a href="https://dashboard.trackveil.net" class="hidden sm:inline-block rounded-lg px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+          Sign In
+        </a>
+        <a href="#signup" class="rounded-lg px-4 py-2 text-sm text-white btn-gradient shadow hover:shadow-glow transition">
+          Start Free
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="relative overflow-hidden section-gradient py-20 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Left: Text -->
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full bg-turquoise/10 dark:bg-turquoise/20 px-4 py-1.5 text-turquoise dark:text-turquoise text-sm font-medium ring-1 ring-turquoise/30 mb-6">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          99.9% tracking reliability
+        </div>
+        
+        <h1 class="text-5xl sm:text-6xl font-extrabold tracking-tight leading-tight">
+          Analytics that actually works.
+          <span class="bg-gradient-to-r from-turquoise to-sky bg-clip-text text-transparent">Everywhere.</span>
+        </h1>
+        
+        <p class="mt-6 text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
+          Simple visitor tracking that works on <strong>all</strong> modern websites — including Progressive Web Apps. 
+          One line of code, zero configuration, beautiful insights.
+        </p>
+        
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href="#signup" class="rounded-xl px-8 py-4 text-lg font-medium text-white btn-gradient shadow-lg hover:shadow-glow transition">
+            Start Free Forever
+          </a>
+          <a href="#how-it-works" class="rounded-xl px-8 py-4 text-lg font-medium border-2 border-gray-300 dark:border-gray-600 hover:border-sky-500 dark:hover:border-sky-400 hover:shadow transition">
+            See How It Works
+          </a>
+        </div>
+        
+        <div class="mt-6 flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            No credit card required
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            Free forever plan
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            GDPR friendly
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right: Dashboard Screenshot -->
+      <div class="relative">
+        <div class="relative rounded-2xl overflow-hidden shadow-2xl ring-1 ring-gray-900/10 dark:ring-white/10">
+          <img src="/img/screenshots/dash1.png" alt="Trackveil Dashboard" class="w-full">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+        </div>
+        <!-- Floating stat card decoration -->
+        <div class="absolute -bottom-6 -left-6 bg-white dark:bg-gray-800 rounded-xl shadow-xl p-4 border border-gray-100 dark:border-gray-700">
+          <div class="text-xs text-gray-600 dark:text-gray-400">Live visitors</div>
+          <div class="text-2xl font-bold text-gray-900 dark:text-white">24</div>
+          <div class="text-xs text-green-600 dark:text-green-400">+12% today</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF / TESTIMONIALS -->
+<section class="py-12 bg-gray-50 dark:bg-slate2">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <p class="text-center text-sm text-gray-600 dark:text-gray-400 mb-8">Trusted by innovative teams</p>
+    
+    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <!-- Kea.gl Testimonial -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <div class="flex items-start gap-4">
+          <img src="/img/users/keagl_small.png" alt="Kea.gl" class="w-12 h-12 rounded-lg">
+          <div class="flex-1">
+            <p class="text-gray-700 dark:text-gray-300 mb-3 italic">
+              "Finally, analytics that works on our PWA. No more service worker headaches. The dashboard is beautiful and the setup took literally 2 minutes."
+            </p>
+            <div class="text-sm">
+              <div class="font-semibold text-gray-900 dark:text-white">Kea.gl Team</div>
+              <div class="text-gray-500 dark:text-gray-400">Pelvic Floor Health App</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Markedo Testimonial -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <div class="flex items-start gap-4">
+          <img src="/img/users/markedo_small.png" alt="Markedo" class="w-12 h-12 rounded-lg">
+          <div class="flex-1">
+            <p class="text-gray-700 dark:text-gray-300 mb-3 italic">
+              "Love the multi-site overview. I can see all my projects at a glance with those mini graphs. Much better than switching between tabs in Google Analytics."
+            </p>
+            <div class="text-sm">
+              <div class="font-semibold text-gray-900 dark:text-white">Markedo Team</div>
+              <div class="text-gray-500 dark:text-gray-400">Digital Agency</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="py-20 bg-white dark:bg-navy">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl font-bold">Why Trackveil?</h2>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">Built for the modern web. No compromises.</p>
+    </div>
+    
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Feature 1: Reliable -->
+      <div class="bg-gradient-to-br from-sky-500 to-sky-600 text-white rounded-2xl p-8 shadow-lg">
+        <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
         </div>
-        <span class="font-semibold">TrackVeil</span>
+        <h3 class="text-xl font-bold mb-2">Actually Reliable</h3>
+        <p class="text-white/90 leading-relaxed">
+          <strong>99.9% tracking success rate.</strong> Works on Progressive Web Apps, sites with service workers, and everything in between. 
+          Where others fail, Trackveil just works.
+        </p>
       </div>
-      <nav class="flex gap-6 text-sm">
-        <a href="#" class="hover:text-sky-600 dark:hover:text-sky-300">Docs</a>
-        <a href="#" class="hover:text-sky-600 dark:hover:text-sky-300">Privacy</a>
-        <a href="#" class="hover:text-sky-600 dark:hover:text-sky-300">Contact</a>
-      </nav>
-      <p class="text-xs">© <span id="year"></span> TrackVeil. All rights reserved.</p>
+      
+      <!-- Feature 2: Easy -->
+      <div class="bg-gradient-to-br from-turquoise to-teal text-white rounded-2xl p-8 shadow-lg">
+        <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Ridiculously Easy</h3>
+        <p class="text-white/90 leading-relaxed">
+          Add one line of code to your site. That's it. No complex setup, no configuration files, no developer needed. 
+          <strong>2 minutes from signup to insights.</strong>
+        </p>
+      </div>
+      
+      <!-- Feature 3: Privacy -->
+      <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-2xl p-8 shadow-lg">
+        <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Privacy First</h3>
+        <p class="text-white/90 leading-relaxed">
+          No cookies needed. GDPR compliant out of the box. We track infrastructure data, not people. 
+          <strong>Respect your visitors' privacy by default.</strong>
+        </p>
+      </div>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script>
-    // Year
-    document.getElementById('year').textContent = new Date().getFullYear();
-    // Simple dark mode toggle (stores preference)
-    const html = document.documentElement;
-    const themeToggle = document.getElementById('themeToggle');
-    const stored = localStorage.getItem('tv-theme');
-    if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="py-20 bg-gray-50 dark:bg-slate2">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl font-bold">Three steps. Seriously.</h2>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">From signup to insights in under 5 minutes</p>
+    </div>
+    
+    <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <div class="text-center">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-turquoise to-teal text-white font-bold text-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+          1
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Sign Up</h3>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">
+          Create your account and get your tracking code. Takes 30 seconds.
+        </p>
+      </div>
+      
+      <div class="text-center">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-600 text-white font-bold text-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+          2
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Add Snippet</h3>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">
+          Paste one line of code before your closing <code class="text-xs bg-gray-200 dark:bg-gray-700 px-1 rounded">&lt;/body&gt;</code> tag. Done.
+        </p>
+      </div>
+      
+      <div class="text-center">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 text-white font-bold text-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+          3
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Get Insights</h3>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">
+          Watch your dashboard fill with real-time visitor data. Beautiful, actionable, simple.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Code Example -->
+    <div class="mt-16 max-w-3xl mx-auto">
+      <div class="bg-gray-900 dark:bg-black rounded-xl p-6 shadow-xl">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-3 h-3 rounded-full bg-red-500"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500"></div>
+          <span class="ml-2 text-xs text-gray-400">index.html</span>
+        </div>
+        <code class="text-sm text-gray-300 font-mono block">
+          <span class="text-gray-500">&lt;!-- Add before closing &lt;/body&gt; tag --&gt;</span><br>
+          <span class="text-pink-400">&lt;script</span>
+          <span class="text-sky-300"> async</span>
+          <span class="text-sky-300"> src=</span><span class="text-green-300">"https://cdn.trackveil.net/tracker.js"</span><br>
+          <span class="text-sky-300">        data-site-id=</span><span class="text-green-300">"your_site_id"</span><span class="text-pink-400">&gt;&lt;/script&gt;</span>
+        </code>
+      </div>
+      <p class="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
+        That's it. Really. One line of code and you're tracking.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD PREVIEW -->
+<section class="py-20 bg-white dark:bg-navy">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+          A dashboard you'll actually <span class="text-turquoise">want</span> to open
+        </h2>
+        <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+          Clean, fast, beautiful. See your visitors, top pages, traffic sources, and trends at a glance. 
+          No clutter, no confusion, just the insights you need.
+        </p>
+        
+        <ul class="space-y-3">
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-turquoise mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <div>
+              <strong class="text-gray-900 dark:text-white">Multi-site overview</strong>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Manage multiple sites with sparkline graphs and quick stats</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-turquoise mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <div>
+              <strong class="text-gray-900 dark:text-white">Dark mode built-in</strong>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Gorgeous in light and dark. Syncs with your system preference.</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-turquoise mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <div>
+              <strong class="text-gray-900 dark:text-white">Real-time updates</strong>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Stats refresh automatically. Always current, never stale.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="relative">
+        <img src="/img/screenshots/dash2.png" alt="Multi-site dashboard" class="rounded-2xl shadow-2xl ring-1 ring-gray-900/10 dark:ring-white/10">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="py-20 bg-gray-50 dark:bg-slate2">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl sm:text-4xl font-bold">Simple, honest pricing</h2>
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">Start free. Grow when you need to.</p>
+    </div>
+    
+    <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <!-- Forever Free -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-200 dark:border-gray-700">
+        <div class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">🌱 Forever Free</div>
+        <div class="text-sm text-gray-600 dark:text-gray-400 italic mb-4">For hobby projects and side gigs</div>
+        <div class="mb-6">
+          <span class="text-4xl font-extrabold text-gray-900 dark:text-white">€0</span>
+          <span class="text-gray-600 dark:text-gray-400">/month</span>
+        </div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-turquoise" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700 dark:text-gray-300">1 site</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-turquoise" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700 dark:text-gray-300">1,000 visits/month</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-turquoise" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700 dark:text-gray-300">All core features</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-turquoise" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700 dark:text-gray-300">Unlimited data retention</span>
+          </li>
+        </ul>
+        <a href="#signup" class="block w-full text-center rounded-xl px-6 py-3 border-2 border-gray-300 dark:border-gray-600 font-medium hover:border-sky-500 dark:hover:border-sky-400 hover:shadow transition">
+          Start Free
+        </a>
+      </div>
+      
+      <!-- Premium Path (Popular) -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border-2 border-sky-500 dark:border-sky-400 relative">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-turquoise to-sky text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg">
+          MOST POPULAR
+        </div>
+        <div class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">🚀 Premium Path</div>
+        <div class="text-sm text-gray-600 dark:text-gray-400 italic mb-4">Grow with confidence</div>
+        <div class="mb-6">
+          <span class="text-4xl font-extrabold text-gray-900 dark:text-white">€15</span>
+          <span class="text-gray-600 dark:text-gray-400">/month</span>
+        </div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-turquoise" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700 dark:text-gray-300"><strong>Up to 3 sites</strong></span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-turquoise" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700 dark:text-gray-300"><strong>10,000 visits/month</strong> per site</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-turquoise" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700 dark:text-gray-300">All core features</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-turquoise" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700 dark:text-gray-300">Priority email support</span>
+          </li>
+        </ul>
+        <a href="#signup" class="block w-full text-center rounded-xl px-6 py-3 text-white font-medium btn-gradient shadow-lg hover:shadow-glow transition">
+          Start Premium Path
+        </a>
+      </div>
+      
+      <!-- Peak Enterprise -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-200 dark:border-gray-700">
+        <div class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">🏔️ Peak Enterprise</div>
+        <div class="text-sm text-gray-600 dark:text-gray-400 italic mb-4">Scale and control</div>
+        <div class="mb-6">
+          <span class="text-4xl font-extrabold text-gray-900 dark:text-white">€30</span>
+          <span class="text-gray-600 dark:text-gray-400">/month</span>
+        </div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-turquoise" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700 dark:text-gray-300"><strong>Up to 5 sites</strong></span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-turquoise" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700 dark:text-gray-300"><strong>100,000 visits/month</strong> per site</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-turquoise" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700 dark:text-gray-300">Advanced team management</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-turquoise" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-gray-700 dark:text-gray-300">Priority support</span>
+          </li>
+        </ul>
+        <a href="#signup" class="block w-full text-center rounded-xl px-6 py-3 border-2 border-gray-300 dark:border-gray-600 font-medium hover:border-sky-500 dark:hover:border-sky-400 hover:shadow transition">
+          Start Peak
+        </a>
+      </div>
+    </div>
+    
+    <!-- Add-ons -->
+    <div class="mt-12 max-w-4xl mx-auto">
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+        <h3 class="font-semibold text-lg mb-4 text-gray-900 dark:text-white">➕ Stack your plan with add-ons</h3>
+        <div class="grid sm:grid-cols-2 gap-3 text-sm">
+          <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+            <span class="text-gray-700 dark:text-gray-300">+1 Site</span>
+            <span class="font-semibold text-gray-900 dark:text-white">€5/month</span>
+          </div>
+          <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+            <span class="text-gray-700 dark:text-gray-300">+10,000 Visits</span>
+            <span class="font-semibold text-gray-900 dark:text-white">€5/month</span>
+          </div>
+          <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+            <span class="text-gray-700 dark:text-gray-300">+100,000 Visits</span>
+            <span class="font-semibold text-gray-900 dark:text-white">€15/month</span>
+          </div>
+          <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+            <span class="text-gray-700 dark:text-gray-300">+1,000,000 Visits</span>
+            <span class="font-semibold text-gray-900 dark:text-white">€100/month</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-20 bg-white dark:bg-navy">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">Questions? Answers.</h2>
+    
+    <div class="space-y-4">
+      <details class="group bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-sm transition">
+        <summary class="cursor-pointer font-semibold text-gray-900 dark:text-white flex items-center justify-between">
+          How do I install Trackveil?
+          <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <p class="mt-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+          Add a single <code class="bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded text-sm">&lt;script&gt;</code> tag before your closing <code class="bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded text-sm">&lt;/body&gt;</code> tag. 
+          That's it. We'll give you your unique tracking code when you sign up. Takes about 2 minutes total.
+        </p>
+      </details>
+      
+      <details class="group bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-sm transition">
+        <summary class="cursor-pointer font-semibold text-gray-900 dark:text-white flex items-center justify-between">
+          Is it privacy-friendly and GDPR compliant?
+          <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <p class="mt-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+          Absolutely. Trackveil doesn't use cookies by default, doesn't collect personal information, and is GDPR compliant out of the box. 
+          We track infrastructure data (browser type, screen size, pages visited), not people. Your visitors' privacy is respected.
+        </p>
+      </details>
+      
+      <details class="group bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-sm transition">
+        <summary class="cursor-pointer font-semibold text-gray-900 dark:text-white flex items-center justify-between">
+          What makes Trackveil different from Plausible or Simple Analytics?
+          <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <p class="mt-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+          <strong>Service worker compatibility.</strong> Trackveil works on <em>all</em> modern websites including Progressive Web Apps (PWAs) with a 99.9% success rate. 
+          Many analytics tools fail on sites with service workers. We use proven image pixel tracking that bypasses service workers completely. 
+          Plus, our multi-site dashboard with sparkline graphs makes managing multiple properties a breeze.
+        </p>
+      </details>
+      
+      <details class="group bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-sm transition">
+        <summary class="cursor-pointer font-semibold text-gray-900 dark:text-white flex items-center justify-between">
+          Can I use this on my Progressive Web App (PWA)?
+          <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <p class="mt-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+          Yes! This is exactly what Trackveil was built for. Unlike other analytics tools that struggle with service workers, 
+          Trackveil uses image pixel tracking — the same technique used by Google Analytics — which <strong>always</strong> bypasses service workers. 
+          We've tested it extensively on real PWAs. It just works.
+        </p>
+      </details>
+      
+      <details class="group bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-sm transition">
+        <summary class="cursor-pointer font-semibold text-gray-900 dark:text-white flex items-center justify-between">
+          What happens when I exceed my plan limits?
+          <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <p class="mt-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+          We still collect all your data — nothing is lost. You'll just see a friendly reminder in your dashboard to upgrade or add more visits. 
+          No surprises, no data loss, no automatic charges. You're always in control. Upgrade when you're ready, or add stackable add-ons to your existing plan.
+        </p>
+      </details>
+      
+      <details class="group bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-sm transition">
+        <summary class="cursor-pointer font-semibold text-gray-900 dark:text-white flex items-center justify-between">
+          Can I cancel anytime?
+          <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <p class="mt-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+          Yes, absolutely. Cancel anytime from your dashboard. No questions asked, no hidden fees, no tricks. 
+          You can manage your subscription, download invoices, and make changes yourself through our Stripe-powered billing portal.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="signup" class="py-20 bg-gradient-to-br from-navy to-slate2 text-white">
+  <div class="mx-auto max-w-4xl text-center px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+      Start tracking smarter today
+    </h2>
+    <p class="text-lg text-gray-300 mb-8">
+      Join teams who trust Trackveil for reliable, privacy-friendly analytics
+    </p>
+    
+    <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-2xl p-8 text-left shadow-2xl">
+      <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Coming Soon!</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-6">
+        We're putting the finishing touches on our signup process. Leave your email and we'll notify you when we launch.
+      </p>
+      
+      <form action="#" method="POST" class="space-y-4">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            required
+            placeholder="you@example.com"
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-sky-500 focus:border-transparent transition"
+          >
+        </div>
+        
+        <button 
+          type="submit"
+          class="w-full px-6 py-3 text-white font-medium rounded-lg btn-gradient shadow hover:shadow-glow transition"
+        >
+          Join Waitlist
+        </button>
+      </form>
+      
+      <p class="mt-4 text-xs text-gray-500 dark:text-gray-400 text-center">
+        Already have an account? <a href="https://dashboard.trackveil.net" class="text-sky-600 dark:text-sky-400 hover:underline">Sign in</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-12 bg-gray-50 dark:bg-slate2 border-t border-gray-200 dark:border-gray-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <img src="/img/icon_64.png" alt="Trackveil" width="32" height="32" class="rounded-lg">
+          <span class="font-semibold text-lg">Trackveil</span>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400 max-w-sm">
+          Simple visitor tracking that actually works. Privacy-friendly, service-worker compatible, beautiful.
+        </p>
+      </div>
+      
+      <div>
+        <h4 class="font-semibold mb-3 text-gray-900 dark:text-white">Product</h4>
+        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+          <li><a href="#features" class="hover:text-sky-600 dark:hover:text-sky-400 transition">Features</a></li>
+          <li><a href="#pricing" class="hover:text-sky-600 dark:hover:text-sky-400 transition">Pricing</a></li>
+          <li><a href="https://dashboard.trackveil.net" class="hover:text-sky-600 dark:hover:text-sky-400 transition">Sign In</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="font-semibold mb-3 text-gray-900 dark:text-white">Resources</h4>
+        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+          <li><a href="#faq" class="hover:text-sky-600 dark:hover:text-sky-400 transition">FAQ</a></li>
+          <li><a href="#" class="hover:text-sky-600 dark:hover:text-sky-400 transition">Documentation</a></li>
+          <li><a href="#" class="hover:text-sky-600 dark:hover:text-sky-400 transition">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="pt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        © <span id="year"></span> Trackveil. All rights reserved.
+      </p>
+      <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+        <span>Made with ❤️ for the modern web</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+  
+  // Dark mode toggle
+  const themeToggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  
+  themeToggle.addEventListener('click', function() {
+    const isDark = html.classList.contains('dark');
+    if (isDark) {
+      html.classList.remove('dark');
+      localStorage.setItem('trackveil-theme', 'light');
+    } else {
       html.classList.add('dark');
-      document.body.classList.replace('bg-offwhite', 'bg-navy');
+      localStorage.setItem('trackveil-theme', 'dark');
     }
-    themeToggle.addEventListener('click', () => {
-      html.classList.toggle('dark');
-      const isDark = html.classList.contains('dark');
-      localStorage.setItem('tv-theme', isDark ? 'dark' : 'light');
-      document.body.classList.toggle('bg-navy');
-      document.body.classList.toggle('bg-offwhite');
+  });
+  
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
